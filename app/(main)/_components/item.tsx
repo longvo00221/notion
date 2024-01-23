@@ -1,13 +1,21 @@
 "use client";
 import { Id } from "@/convex/_generated/dataModel";
 import { cn } from "@/lib/utils";
-import { ChevronDown, ChevronRight, LucideIcon, Plus } from "lucide-react";
+import { ChevronDown, ChevronRight, LucideIcon, MoreHorizontal, Plus, Trash } from "lucide-react";
 import React from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import {useMutation} from 'convex/react'
 import { api } from "@/convex/_generated/api";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { 
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuItem,
+  DropdownMenuContent,
+  DropdownMenuSeparator } 
+from "@/components/ui/dropdown-menu";
+import { useUser } from "@clerk/clerk-react";
 type ItemProps = {
   id?: Id<"documents">;
   documentIcon?: String;
@@ -17,7 +25,7 @@ type ItemProps = {
   onExpand?: () => void;
   level?: number;
   label: String;
-  onClick: () => void;
+  onClick?: () => void;
   icon: LucideIcon;
 };
 type ItemStaticProps = {
@@ -35,8 +43,21 @@ export const Item: React.FC<ItemProps> & ItemStaticProps = ({
   onExpand,
   level = 0,
 }) => {
-  const create = useMutation(api.documents.create)
+
+    const create = useMutation(api.documents.create)
+    const user = useUser()
   const router = useRouter()
+  const archive = useMutation(api.documents.archive)
+  const onArchive = (event:React.MouseEvent<HTMLDivElement,MouseEvent>) => {
+    event.stopPropagation()
+    if(!id) return;
+    const promise = archive({id})
+    toast.promise(promise,{
+      loading:"Moving to trash",
+      success:"Note moved to trash!",
+      error:"Failed to archive note."
+    })
+  }
   const handleExpand = (
     e: React.MouseEvent<HTMLDivElement,MouseEvent>
   ) => {
@@ -93,6 +114,31 @@ export const Item: React.FC<ItemProps> & ItemStaticProps = ({
       )}
       {!!id && (
         <div className="ml-auto flex items-center gap-x-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger 
+            onClick={(e) => e.stopPropagation()}
+            asChild
+            >
+              <div role='button' className="opacity-0 group-hover:opacity-100 h-full ml-auto rounded-sm hover:bg-neutral-300">
+                <MoreHorizontal className="h-4 w-4 text-muted-foreground"/>
+              </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent 
+            className="w-60"
+            align="start"
+            side="right"
+            forceMount
+            >
+              <DropdownMenuItem onClick={(event)=>{onArchive(event)}}>
+                <Trash className="h-4 w-4 mr-2"/>
+                Delete
+              </DropdownMenuItem>
+              <DropdownMenuSeparator/>
+              <div className="text-xs text-muted-foreground p-2">
+                Last edited by : {user?.user?.fullName}
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <div 
           role="button"
           onClick={onCreate}

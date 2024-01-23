@@ -20,6 +20,8 @@ const DocumentsPage = () => {
             error:"Failed to create a new note"
         })
     }
+
+
     return (
     <div className='h-full flex flex-col items-center justify-center space-y-4'>
         <Image 
@@ -27,13 +29,13 @@ const DocumentsPage = () => {
         height="300"
         width="300"
         alt='Empty'
-        className='dark:hidden'/>
+        className='dark:hidden block'/>
         <Image 
         src="/empty-dark.png"
         height="300"
         width="300"
         alt='Empty'
-        className='dark:block'/>
+        className='dark:block hidden'/>
         <h2 className='text-lg font-medium'>
             Welcome to {user?.fullName}&apos;s Notion
         </h2>

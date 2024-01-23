@@ -46,8 +46,6 @@ const DocumentList: React.FC<DocumentListProps> = ({
       </>
     );
   }
-console.log(documents)
-
   return (
     <>
       <p
