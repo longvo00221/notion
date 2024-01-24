@@ -6,9 +6,10 @@ type layoutProps = {
 };
 
 const layout: React.FC<layoutProps> = ({ children }) => {
-  ToggleThemeMatchWithWindow()
+ 
   return (
     <div className="h-full dark:bg-[#1f1f1f]">
+      <ToggleThemeMatchWithWindow/>
       <Navbar />
       <main className="h-full pt-40">{children}</main>
     </div>

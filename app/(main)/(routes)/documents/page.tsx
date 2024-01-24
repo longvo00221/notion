@@ -39,7 +39,7 @@ const DocumentsPage = () => {
         <h2 className='text-lg font-medium'>
             Welcome to {user?.fullName}&apos;s Notion
         </h2>
-        <Button onClick={onCreate}>
+        <Button onClick={onCreate} className='dark:bg-black dark:text-white'>
             <PlusCircle className='h-4 w-4 mr-2'/>
             Create a note
         </Button>

@@ -24,9 +24,10 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   if (!isAuthenticated) {
     return redirect("/");
   }
-  ToggleThemeMatchWithWindow()
+
   return (
     <div className="h-full flex dark:bg-[#1f1f1f]">
+        <ToggleThemeMatchWithWindow/>
         <Navigation/>
       <main className="flex-1 h-full overflow-y-auto">
         <SearchCommand/>
