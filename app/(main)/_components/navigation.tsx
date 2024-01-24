@@ -167,7 +167,7 @@ const Navigation: React.FC<NavigationProps> = () => {
       <div
         ref={navbarRef}
         className={cn(
-          "z-[9998] left-60 w-[calc(100% - 240px)]",
+          "absolute top-2 z-[9998] left-60 w-[calc(100% - 240px)]",
           isResetting && "transition-all ease-in-out duration-300",
           isMobile && "left-0 w-full"
         )}
