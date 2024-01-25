@@ -70,7 +70,7 @@ const TrashBox:React.FC<TrashBoxtype> = () => {
                 key={doc._id} 
                 role='button'
                 onClick={()=>onClick(doc._id)}
-                className='text-sm rounded-sm w-full hover:bg-primary/5 flex items-center justify-between text-primary'
+                className='text-sm rounded-sm w-full hover:bg-primary/5 flex items-center py-1 justify-between text-primary'
                 >
                     <span className='truncate pl-2'>{doc.title}</span>
                     <div className='flex items-center'>
@@ -78,7 +78,7 @@ const TrashBox:React.FC<TrashBoxtype> = () => {
                             <Undo className='h-4 w-4 text-muted-foreground'/>
                         </div>
                         <ConfirmModal onConfirm={()=> onRemove(doc._id)}>
-                            <div className='rounded-sm p-2 hover:bg-neutral-200 dark:bg-neutral-600' role='button'>
+                            <div className='rounded-sm p-2 hover:bg-neutral-200 dark:hover:bg-neutral-600' role='button'>
                                 <Trash className='h-4 w-4 text-muted-foreground'/>
                             </div>
                         </ConfirmModal>

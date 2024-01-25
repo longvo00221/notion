@@ -39,20 +39,22 @@ const Menu:MenuComponent = ({documentId}) => {
         router.push("/documents")
     }
     return (
-        <DropdownMenu>
+        <DropdownMenu >
             <DropdownMenuTrigger asChild>
                 <Button size="sm" variant="ghost" >
                     <MoreHorizontal className='h-4 w-4 '/>
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className='w-60' align='end' alignOffset={8} forceMount>
+            <DropdownMenuContent className='w-60' align='center' alignOffset={8} forceMount>
                 <DropdownMenuItem>
-                    <Trash className='h-4 w-4 mr-2'/>
-                    Delete
+                  <Button onClick={onArchive} variant="ghost" className='w-full flex items-center justify-start'>
+                        <Trash className='h-4 w-4 mr-2'/>
+                        Delete
+                  </Button>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator/>
                 <div className='tetxt-xs text-muted-foreground p-2'>
-                    Last edited by:{user?.user?.fullName}
+                    Last edited by: {user?.user?.fullName}
                 </div>
             </DropdownMenuContent>
         </DropdownMenu>
