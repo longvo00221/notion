@@ -14,8 +14,8 @@ import { ModeToggle } from "@/components/mode-toggle"
 export const SettingModal = () => {
     const setting = useSetting()
     return (
-        <Dialog open={setting.isOpen} onOpenChange={setting.onClose}>
-            <DialogContent>
+        <Dialog open={setting.isOpen}  onOpenChange={setting.onClose}>
+            <DialogContent  className="dark:text-white/75 text-black">
                 <DialogHeader className="border-b pb-3">
                     <h2 className="text-lg font-medium">
                         My Settings
