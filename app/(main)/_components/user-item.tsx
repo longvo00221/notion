@@ -20,7 +20,7 @@ const UserItem = () => {
                 <Avatar className="h-5 w-5">
                     <AvatarImage src={user?.imageUrl}/>
                 </Avatar>
-                <span className="text-start font-medium line-clamp-1">{user?.fullName}&apos;s Notion</span>
+                <span className="text-start font-medium line-clamp-1 dark:text-white/75 text-black">{user?.fullName}&apos;s Notion</span>
             </div>
             <ChevronsLeftRight className="rotate-90 ml-2 text-muted-foreground h-4 w-4"/>
         </div>

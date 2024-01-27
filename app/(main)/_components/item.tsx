@@ -71,7 +71,7 @@ export const Item: React.FC<ItemProps> & ItemStaticProps = ({
       if(!expanded) {
         onExpand?.()
       }
-      // router.push(`/documents/${docId}`)
+      router.push(`/documents/${docId}`)
     })
     toast.promise(promise,{
       loading:"Creating a new note...",

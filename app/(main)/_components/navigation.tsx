@@ -27,10 +27,12 @@ import TrashBox from "./TrashBox";
 import { useSearch } from "@/hooks/useSearch";
 import { useSetting } from "@/hooks/useSetting";
 import Navbar from "./navbar";
+import { useRouter } from "next/navigation";
 type NavigationProps = {};
 
 const Navigation: React.FC<NavigationProps> = () => {
   const pathname = usePathname();
+  const router = useRouter();
   const isMobile = useMediaQuery("(max-width:768px)");
   const search = useSearch();
   const params = useParams();
@@ -109,7 +111,7 @@ const Navigation: React.FC<NavigationProps> = () => {
   const handleCreateNote = () => {
     const promise = create({
       title: "Untitled",
-    });
+    }).then((documentId) => router.push(`/documents/${documentId}`));
     toast.promise(promise, {
       loading: "Creating a new note...",
       success: "New note created",
@@ -173,9 +175,7 @@ const Navigation: React.FC<NavigationProps> = () => {
         )}
       >
         {!!params.documentId ? (
-          <Navbar 
-          isCollapsed={isCollapsed}
-          onResetWidth={resetWidth}/>
+          <Navbar isCollapsed={isCollapsed} onResetWidth={resetWidth} />
         ) : (
           <nav className="bg-transparent px-3 py-2 w-full z-10">
             {isCollapsed && (

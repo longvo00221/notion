@@ -10,6 +10,13 @@ html,body,:root{
 .cl-internal-uyu30o{
   padding: 0;
 }
+.mantine-ActionIcon-loader{
+  display:none
+}
+.bn-side-menu{
+  margin-right: 5px;
+  gap: 5px;
+}
 @layer base {
   :root {
     --background: 0 0% 100%;
