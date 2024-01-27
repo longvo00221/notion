@@ -42,7 +42,7 @@ const Menu:MenuComponent = ({documentId}) => {
         <DropdownMenu >
             <DropdownMenuTrigger asChild>
                 <Button size="sm" variant="ghost" >
-                    <MoreHorizontal className='h-4 w-4 '/>
+                    <MoreHorizontal className='h-4 w-4 dark:text-white/75 text-black'/>
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className='w-60' align='center' alignOffset={8} forceMount>
