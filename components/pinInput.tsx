@@ -16,7 +16,7 @@ const PinInput: React.FC<PinInputProps> = ({ length }) => {
     const params = useParams()
     const inputRefs = useRef<Array<React.RefObject<HTMLInputElement>>>([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    
+
     const update = useMutation(api.documents.update)
     useEffect(() => {
         inputRefs.current = Array.from({ length }, (_, index) => inputRefs.current[index] || createRef());
@@ -24,6 +24,10 @@ const PinInput: React.FC<PinInputProps> = ({ length }) => {
     }, [length]);
 
     const handleInputChange = (index: number, value: string) => {
+        const regex = /[^0-9]/g;
+        if(regex.test(value)){
+            return
+        }
         const newPin = [...pin];
         newPin[index] = value;
         setPin(newPin);
@@ -61,15 +65,15 @@ const PinInput: React.FC<PinInputProps> = ({ length }) => {
             <div className="flex items-center justify-center">
                 {pin.map((digit, index) => (
                     <input
-                    key={index}
-                    ref={inputRefs.current[index]}
-                    type="text"
-                    maxLength={1}
-                    value={digit}
-                    onChange={(e) => handleInputChange(index, e.target.value)}
-                    onKeyDown={(e) => (index === length - 1 ? handleLastKeyDown(index, e) : handleKeyDown(index, e))}
-                    className="w-10 h-10  rounded-md mx-3 text-center border-black border-[2px]"
-                />
+                        key={index}
+                        ref={inputRefs.current[index]}
+                        type="text"
+                        maxLength={1}
+                        value={digit}
+                        onChange={(e) => handleInputChange(index, e.target.value)}
+                        onKeyDown={(e) => (index === length - 1 ? handleLastKeyDown(index, e) : handleKeyDown(index, e))}
+                        className="w-10 h-10  rounded-md mx-3 text-center border-black border-[2px]"
+                    />
                 ))}
 
             </div>
