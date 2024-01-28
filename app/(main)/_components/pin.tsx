@@ -41,11 +41,11 @@ const Pin: React.FC<PinProps> = ({ initialData }) => {
 
                     {initialData.isLocked.length === 0 ? (
                         <Lock
-                            className="w-4 h-4 ml-2 dark:text-white/75 text-black"
+                            className="w-4 h-4 dark:text-white/75 text-black"
                         />
                     ) : (
                         <Lock
-                            className="w-4 h-4 ml-2 text-rose-600"
+                            className="w-4 h-4 text-rose-600"
                         />
                     )}
                 </Button>

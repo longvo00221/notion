@@ -29,7 +29,7 @@ export const PinModal = () => {
                     </DialogDescription>
                 </DialogHeader>
                 
-                <div className="flex items-center border-t-2 justify-center ">
+                <div className="flex items-center justify-center ">
 
                     <PinInput length={inputLength} />
                 </div>

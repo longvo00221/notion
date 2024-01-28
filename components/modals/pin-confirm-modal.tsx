@@ -28,7 +28,7 @@ export const PinComfirmModal = () => {
                         This note is locked please enter pin for edit
                     </DialogDescription>
                 </DialogHeader>
-                <div className="flex items-center border-t-2 justify-center ">
+                <div className="flex items-center justify-center ">
 
                     <PinComfirmInput length={4} />
                 </div>

@@ -68,7 +68,7 @@ const PinComfirmInput: React.FC<PinComfirmInputProps> = ({ length }) => {
                     <input
                         key={index}
                         ref={inputRefs.current[index]}
-                        type="text"
+                        type="password"
                         maxLength={1}
                         value={digit}
                         onChange={(e) => handleInputChange(index, e.target.value)}
