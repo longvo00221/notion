@@ -1,5 +1,5 @@
 'use client'
-import {useEffect,useState} from "react"
+import { useEffect, useState } from "react"
 import { File } from "lucide-react"
 import { useQuery } from "convex/react"
 import { useRouter } from "next/navigation"
@@ -17,37 +17,46 @@ import {
 } from "@/components/ui/command"
 import { useSearch } from "@/hooks/useSearch"
 import { api } from "@/convex/_generated/api"
+import { useConfirmPin } from "@/hooks/useConfirmPin"
 export const SearchCommand = () => {
-    const {user} = useUser()
+    const { user } = useUser()
     const router = useRouter()
     const documents = useQuery(api.documents.getSearch)
-    const [isMounted,setIsMounted] = useState<boolean>(false)
+    const pinConfirm = useConfirmPin()
+    const [isMounted, setIsMounted] = useState<boolean>(false)
     const toggle = useSearch((store) => store.toggle)
     const isOpen = useSearch((store) => store.isOpen)
-    const onClose =useSearch((store) => store.onClose)
-    useEffect(()=>{
+    const onClose = useSearch((store) => store.onClose)
+    useEffect(() => {
         setIsMounted(true)
-    },[])
-    useEffect(()=>{
-        const down = (e:KeyboardEvent) => {
-            if(e.key==="k" && (e.metaKey||e.ctrlKey)){
+    }, [])
+    useEffect(() => {
+        const down = (e: KeyboardEvent) => {
+            if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
                 e.preventDefault()
                 toggle()
             }
         }
-        document.addEventListener("keydown",down)
-        return () => document.removeEventListener("keydown",down)
-    },[toggle])
-    const onSelect = (id:string) => {
-        router.push(`/documents/${id}`)
+        document.addEventListener("keydown", down)
+        return () => document.removeEventListener("keydown", down)
+    }, [toggle])
+    const onSelect = (id: string, isLocked: any) => {
+        if (isLocked && isLocked.length > 0) {
+
+
+            pinConfirm.onOpen(id)
+        } else {
+
+            router.push(`/documents/${id}`)
+        }
         onClose()
     }
-    if(!isMounted){
+    if (!isMounted) {
         return null
     }
     return (
         <CommandDialog open={isOpen} onOpenChange={onClose}>
-            <CommandInput 
+            <CommandInput
                 placeholder={`Search ${user?.fullName}'s Notion...`}
             />
             <CommandList>
@@ -57,15 +66,15 @@ export const SearchCommand = () => {
                 <CommandGroup heading="Documents">
                     {documents?.map((doc) => (
                         <CommandItem
-                         key={doc._id}
-                         value={`${doc._id} - ${doc.title}`}
-                         title={doc.title}
-                         onSelect={onSelect}
+                            key={doc._id}
+                            value={doc._id}
+                            title={doc.title}
+                            onSelect={() => onSelect(doc._id, doc.isLocked)}
                         >
                             {doc.icon ? (
                                 <p className="mr-2 text-[18px]">{doc.icon}</p>
                             ) : (
-                                <File className="mr-2 h-4 w-4"/>
+                                <File className="mr-2 h-4 w-4" />
                             )}
                             <span>{doc.title}</span>
                         </CommandItem>

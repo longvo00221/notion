@@ -36,8 +36,6 @@ const DocumentList: React.FC<DocumentListProps> = ({
   const onRedirect = (documentId: string, isLocked: any) => {
 
     if (isLocked && isLocked.length > 0) {
-     
-
       pinConfirm.onOpen(documentId)
     } else {
       router.push(`/documents/${documentId}`);
