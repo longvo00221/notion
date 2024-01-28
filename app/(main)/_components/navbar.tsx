@@ -8,6 +8,7 @@ import { Title } from "./title";
 import Banner from "./banner";
 import Menu from "./menu";
 import {Publish} from "./publish";
+import Pin from "./pin";
 type NavbarProps = {
   isCollapsed: boolean;
   onResetWidth: () => void;
@@ -45,6 +46,7 @@ const Navbar: React.FC<NavbarProps> = ({ isCollapsed, onResetWidth }) => {
           <Title initalData={document} />
           <div className="flex items-center gap-x-2">
             <Publish initialData={document}/>
+            <Pin initialData={document}/>
             <Menu documentId={document._id}/>
           </div>
         </div>

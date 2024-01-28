@@ -1,20 +1,21 @@
 "use client";
 import { Id } from "@/convex/_generated/dataModel";
 import { cn } from "@/lib/utils";
-import { ChevronDown, ChevronRight, LucideIcon, MoreHorizontal, Plus, Trash } from "lucide-react";
+import { ChevronDown, ChevronRight, Lock, LucideIcon, MoreHorizontal, Plus, Trash } from "lucide-react";
 import React from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import {useMutation} from 'convex/react'
+import { useMutation } from 'convex/react'
 import { api } from "@/convex/_generated/api";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { 
+import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuItem,
   DropdownMenuContent,
-  DropdownMenuSeparator } 
-from "@/components/ui/dropdown-menu";
+  DropdownMenuSeparator
+}
+  from "@/components/ui/dropdown-menu";
 import { useUser } from "@clerk/clerk-react";
 type ItemProps = {
   id?: Id<"documents">;
@@ -26,6 +27,7 @@ type ItemProps = {
   level?: number;
   label: String;
   onClick?: () => void;
+  isLocked?: any
   icon: LucideIcon;
 };
 type ItemStaticProps = {
@@ -39,44 +41,45 @@ export const Item: React.FC<ItemProps> & ItemStaticProps = ({
   isSearch,
   documentIcon,
   expanded,
+  isLocked,
   id,
   onExpand,
   level = 0,
 }) => {
 
-    const create = useMutation(api.documents.create)
-    const user = useUser()
+  const create = useMutation(api.documents.create)
+  const user = useUser()
   const router = useRouter()
   const archive = useMutation(api.documents.archive)
-  const onArchive = (event:React.MouseEvent<HTMLDivElement,MouseEvent>) => {
+  const onArchive = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.stopPropagation()
-    if(!id) return;
-    const promise = archive({id})
-    toast.promise(promise,{
-      loading:"Moving to trash",
-      success:"Note moved to trash!",
-      error:"Failed to archive note."
+    if (!id) return;
+    const promise = archive({ id })
+    toast.promise(promise, {
+      loading: "Moving to trash",
+      success: "Note moved to trash!",
+      error: "Failed to archive note."
     })
   }
   const handleExpand = (
-    e: React.MouseEvent<HTMLDivElement,MouseEvent>
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     e.stopPropagation();
     onExpand?.();
   }
-  const onCreate = (e:React.MouseEvent<HTMLDivElement,MouseEvent>)=>{
-    if(!id) return;
-    const promise = create({title:"Untitled",parentDocument:id})
-    .then((docId) => {
-      if(!expanded) {
-        onExpand?.()
-      }
-      router.push(`/documents/${docId}`)
-    })
-    toast.promise(promise,{
-      loading:"Creating a new note...",
-      success:"New note created!",
-      error:"Failed to create a new note."
+  const onCreate = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (!id) return;
+    const promise = create({ title: "Untitled", parentDocument: id })
+      .then((docId) => {
+        if (!expanded) {
+          onExpand?.()
+        }
+        router.push(`/documents/${docId}`)
+      })
+    toast.promise(promise, {
+      loading: "Creating a new note...",
+      success: "New note created!",
+      error: "Failed to create a new note."
     })
   }
   const ChevronIcon = expanded ? ChevronDown : ChevronRight;
@@ -103,49 +106,57 @@ export const Item: React.FC<ItemProps> & ItemStaticProps = ({
       {documentIcon ? (
         <div className="shrink-0 mr-2 text-[18px]">{documentIcon}</div>
       ) : (
-        <Icon className="shrink-0 h-[18px] mr-2 text-muted-foreground" />
+        isLocked && isLocked.length > 0 ? (
+          <Lock className="text-rose-600 w-6 h-6 mr-2" />
+        ) : (
+          <Icon className="shrink-0 h-[18px] mr-2 text-muted-foreground" />
+        )
       )}
 
-      <span className="truncate">{label}</span>
+
+      <div className="flex items-center justify-between w-full">
+        <span className="truncate">{label} </span>
+
+      </div>
       {isSearch && (
         <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
-            <span className="text-xs">⌘</span>k
+          <span className="text-xs">⌘</span>k
         </kbd>
       )}
       {!!id && (
         <div className="ml-auto flex items-center gap-x-2">
           <DropdownMenu>
-            <DropdownMenuTrigger 
-            onClick={(e) => e.stopPropagation()}
-            asChild
+            <DropdownMenuTrigger
+              onClick={(e) => e.stopPropagation()}
+              asChild
             >
               <div role='button' className="opacity-0 group-hover:opacity-100 h-full ml-auto rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600">
-                <MoreHorizontal className="h-4 w-4 text-muted-foreground"/>
+                <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
               </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent 
-            className="w-60"
-            align="start"
-            side="right"
-            forceMount
+            <DropdownMenuContent
+              className="w-60"
+              align="start"
+              side="right"
+              forceMount
             >
-              <DropdownMenuItem onClick={(event)=>{onArchive(event)}}>
-                <Trash className="h-4 w-4 mr-2"/>
+              <DropdownMenuItem onClick={(event) => { onArchive(event) }}>
+                <Trash className="h-4 w-4 mr-2" />
                 Delete
               </DropdownMenuItem>
-              <DropdownMenuSeparator/>
+              <DropdownMenuSeparator />
               <div className="text-xs text-muted-foreground p-2">
                 Last edited by : {user?.user?.fullName}
               </div>
             </DropdownMenuContent>
           </DropdownMenu>
-          <div 
-          role="button"
-          onClick={onCreate}
-          className="opacity-0 group-hover:opacity-100 h-full ml-auto rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600"
+          <div
+            role="button"
+            onClick={onCreate}
+            className="opacity-0 group-hover:opacity-100 h-full ml-auto rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600"
           >
-            <Plus className="h-4 w-4 text-muted-foreground"/>
-          </div>  
+            <Plus className="h-4 w-4 text-muted-foreground" />
+          </div>
         </div>
       )}
     </div>

@@ -3,6 +3,8 @@
 import { useEffect,useState } from "react"
 import { SettingModal } from "@/components/modals/setting-modal"
 import {CoverImageModal} from "@/components/modals/cover-image-modal"
+import { PinModal } from "../modals/pin-modal"
+import { PinComfirmModal } from "../modals/pin-confirm-modal"
 export const ModalProvider = () => {
     const [isMounted,setIsMounted] = useState<boolean>(false)
     useEffect(()=>{
@@ -14,6 +16,8 @@ export const ModalProvider = () => {
     return(
         <>
             <SettingModal/>
+            <PinModal/>
+            <PinComfirmModal/>
             <CoverImageModal/>
         </>
     )

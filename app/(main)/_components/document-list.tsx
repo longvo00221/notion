@@ -7,6 +7,7 @@ import { api } from "@/convex/_generated/api";
 import { Item } from "./item";
 import { cn } from "@/lib/utils";
 import { FileIcon } from "lucide-react";
+import { useConfirmPin } from "@/hooks/useConfirmPin";
 type DocumentListProps = {
   parentDocumentId?: Id<"documents">;
   level?: number;
@@ -19,6 +20,7 @@ const DocumentList: React.FC<DocumentListProps> = ({
 }) => {
   const params = useParams();
   const router = useRouter();
+  const pinConfirm = useConfirmPin()
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const onExpand = (documentId: string) => {
 
@@ -30,8 +32,16 @@ const DocumentList: React.FC<DocumentListProps> = ({
   const documents = useQuery(api.documents.getSidebar, {
     parentDocument: parentDocumentId,
   });
-  const onRedirect = (documentId: string) => {
-    router.push(`/documents/${documentId}`);
+
+  const onRedirect = (documentId: string, isLocked: any) => {
+
+    if (isLocked && isLocked.length > 0) {
+     
+
+      pinConfirm.onOpen(documentId)
+    } else {
+      router.push(`/documents/${documentId}`);
+    }
   };
   if (documents === undefined) {
     return (
@@ -62,21 +72,22 @@ const DocumentList: React.FC<DocumentListProps> = ({
       </p>
       {documents.map((doc) => (
         <div key={doc._id}>
-            <Item
+          <Item
             id={doc._id}
-            onClick={()=> onRedirect(doc._id)}
+            isLocked={doc.isLocked}
+            onClick={() => onRedirect(doc._id, doc.isLocked)}
             label={doc.title}
             icon={FileIcon}
             documentIcon={doc.icon}
             active={params.documentId === doc._id}
             level={level}
-            onExpand={()=> onExpand(doc._id)}
-            expanded={expanded[doc._id]}/>
-            {expanded[doc._id] && (
-                <DocumentList
-                parentDocumentId={doc._id}
-                level={level + 1}/>
-            )}
+            onExpand={() => onExpand(doc._id)}
+            expanded={expanded[doc._id]} />
+          {expanded[doc._id] && (
+            <DocumentList
+              parentDocumentId={doc._id}
+              level={level + 1} />
+          )}
         </div>
       ))}
     </>
