@@ -12,7 +12,7 @@ type PinComfirmInputProps = {
 };
 const PinComfirmInput: React.FC<PinComfirmInputProps> = ({ length }) => {
     const [pin, setPin] = useState<string[]>(Array(length).fill(''));
-
+    const [isPinCorrect, setIsPinCorrect] = useState<boolean | null>(null);
     const confirmPin = useConfirmPin()
     const document = useQuery(api.documents.getById, {
         documentId: confirmPin.id as Id<"documents">
@@ -49,20 +49,22 @@ const PinComfirmInput: React.FC<PinComfirmInputProps> = ({ length }) => {
     const onSubmitPin = () => {
         setIsSubmitting(true);
         const pinString = pin.join('');
-    
+
         // Check if document is defined before accessing properties
         const isLockedString = document?.isLocked?.join('') || '';
-    
+
         if (pinString === isLockedString) {
+            setIsPinCorrect(true);
             confirmPin.onClose();
             confirmPin.onUnlocked();
             toast.success("Note unlocked!");
             router.push(`/documents/${document?._id}`);
         } else {
+            setIsPinCorrect(false);
             toast.error("Wrong pin, try again");
         }
     };
-    
+
     return (
         <div>
             <div className="flex items-center justify-center">
@@ -75,7 +77,7 @@ const PinComfirmInput: React.FC<PinComfirmInputProps> = ({ length }) => {
                         value={digit}
                         onChange={(e) => handleInputChange(index, e.target.value)}
                         onKeyDown={(e) => (index === length - 1 ? handleLastKeyDown(index, e) : handleKeyDown(index, e))}
-                        className="w-10 h-10  rounded-md mx-3 text-center border-black border-[2px]"
+                        className={`w-10 h-10 rounded-md mx-3 text-center border-[2px] ${isPinCorrect === false ? 'border-red-600' : 'border-black '}`}
                     />
                 ))}
 
