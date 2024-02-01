@@ -5,6 +5,7 @@ import { useConfirmPin } from '@/hooks/useConfirmPin';
 import { Lock } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import React, { useEffect } from 'react';
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 interface LockedNoteProps {
    documentId:Id<"documents">
