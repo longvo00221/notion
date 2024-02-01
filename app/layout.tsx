@@ -6,6 +6,10 @@ import { ConvexClientProvider } from "@/components/providers/convex-provider";
 import { Toaster } from "sonner";
 import { ModalProvider } from "@/components/providers/modal-provider";
 import { EdgeStoreProvider } from "../lib/edgestore";
+
+
+import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from '@vercel/analytics/react';
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -49,6 +53,7 @@ export default function RootLayout({
               <Toaster position="bottom-center" />
               <ModalProvider />
               {children}
+              <SpeedInsights />
             </ThemeProvider>
           </EdgeStoreProvider>
         </ConvexClientProvider>
