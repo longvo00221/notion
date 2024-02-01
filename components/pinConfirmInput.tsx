@@ -49,18 +49,20 @@ const PinComfirmInput: React.FC<PinComfirmInputProps> = ({ length }) => {
     const onSubmitPin = () => {
         setIsSubmitting(true);
         const pinString = pin.join('');
+    
+        // Check if document is defined before accessing properties
         const isLockedString = document?.isLocked?.join('') || '';
-
+    
         if (pinString === isLockedString) {
-            confirmPin.onClose()
-            toast.success("Note unlocked!")
-            router.push(`/documents/${document?._id}`)
-
+            confirmPin.onClose();
+            confirmPin.onUnlocked();
+            toast.success("Note unlocked!");
+            router.push(`/documents/${document?._id}`);
         } else {
-            toast.error("Wrong pin try again")
+            toast.error("Wrong pin, try again");
         }
     };
-
+    
     return (
         <div>
             <div className="flex items-center justify-center">

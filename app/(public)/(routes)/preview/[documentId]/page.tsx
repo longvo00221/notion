@@ -4,9 +4,11 @@ import dynamic from "next/dynamic";
 import { useMemo } from "react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import  Toolbar  from "@/components/toolbar";
+import Toolbar from "@/components/toolbar";
 import { Cover } from "@/components/cover";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useConfirmPin } from "@/hooks/useConfirmPin";
+import Image from "next/image";
 
 interface DocumentIdPageProps {
   params: {
@@ -17,14 +19,14 @@ interface DocumentIdPageProps {
 const DocumentIdPage = ({
   params
 }: DocumentIdPageProps) => {
-    const Editor = useMemo(
-  () =>
-    dynamic(() => import("@/components/editor").then((module) => module.default), {
-      ssr: false,
-    }),
-  []
-);
-
+  const Editor = useMemo(
+    () =>
+      dynamic(() => import("@/components/editor").then((module) => module.default), {
+        ssr: false,
+      }),
+    []
+  );
+  const pinConfirm = useConfirmPin()
 
   const document = useQuery(api.documents.getById, {
     documentId: params.documentId
@@ -60,19 +62,40 @@ const DocumentIdPage = ({
     return <div>Not found</div>
   }
 
-  return ( 
-    <div className="pb-40">
-      <Cover preview url={document.coverImage} />
-      <div className="md:max-w-3xl lg:max-w-4xl mx-auto">
-        <Toolbar preview initialData={document} />
-        <Editor
-          editable={false}
-          onChange={onChange}
-          initialContent={document.content}
-        />
-      </div>
-    </div>
-   );
+  return (
+    <>
+      {document?.isLocked && document.isLocked?.length > 0 && !pinConfirm.isUnlocked
+        ? <div className="flex flex-col items-center justify-center h-full">
+          <Image
+            src="/error.png"
+            height="300"
+            width="300"
+            alt="Error"
+            className="dark:hidden"
+          />
+          <Image
+            src="/error-dark.png"
+            height="300"
+            width="300"
+            alt="Error"
+            className="hidden dark:block"
+          />
+          <p className="text-muted-foreground mt-2">Note is locked by the author. Please contact the author if you want to view it.</p>
+
+        </div>
+        : <div className="pb-40">
+          <Cover preview url={document.coverImage} />
+          <div className="md:max-w-3xl lg:max-w-4xl mx-auto">
+            <Toolbar preview initialData={document} />
+            <Editor
+              editable={false}
+              onChange={onChange}
+              initialContent={document.content}
+            />
+          </div>
+        </div>}
+    </>
+  );
 }
- 
+
 export default DocumentIdPage;

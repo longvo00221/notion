@@ -41,7 +41,7 @@ export const SearchCommand = () => {
         return () => document.removeEventListener("keydown", down)
     }, [toggle])
     const onSelect = (id: string, isLocked: any) => {
-        if (isLocked && isLocked.length > 0) {
+        if (isLocked && isLocked.length > 0 && !pinConfirm.isUnlocked) {
 
 
             pinConfirm.onOpen(id)

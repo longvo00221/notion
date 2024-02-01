@@ -1,12 +1,14 @@
 "use client";
 import { useMutation, useQuery } from "convex/react";
 import dynamic from "next/dynamic";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import  Toolbar  from "@/components/toolbar";
+import Toolbar from "@/components/toolbar";
 import { Cover } from "@/components/cover";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useConfirmPin } from "@/hooks/useConfirmPin";
+import LockedNote from "@/app/(main)/_components/lockednote";
 
 interface DocumentIdPageProps {
   params: {
@@ -17,15 +19,15 @@ interface DocumentIdPageProps {
 const DocumentIdPage = ({
   params
 }: DocumentIdPageProps) => {
-    const Editor = useMemo(
-  () =>
-    dynamic(() => import("@/components/editor").then((module) => module.default), {
-      ssr: false,
-    }),
-  []
-);
+  const Editor = useMemo(
+    () =>
+      dynamic(() => import("@/components/editor").then((module) => module.default), {
+        ssr: false,
+      }),
+    []
+  );
 
-
+  const pinConfirm = useConfirmPin()
   const document = useQuery(api.documents.getById, {
     documentId: params.documentId
   });
@@ -38,7 +40,11 @@ const DocumentIdPage = ({
       content
     });
   };
-
+  useEffect(() => {
+    if (document?.isLocked && document.isLocked?.length > 0 && !pinConfirm.isUnlocked) {
+      pinConfirm.onOpen(params.documentId)
+    }
+  }, [])
   if (document === undefined) {
     return (
       <div>
@@ -59,18 +65,20 @@ const DocumentIdPage = ({
     return <div>Not found</div>
   }
 
-  return ( 
-    <div className="pb-40">
-      <Cover url={document.coverImage} />
-      <div className="md:max-w-3xl lg:max-w-4xl mx-auto">
-        <Toolbar initialData={document} />
-        <Editor
-          onChange={onChange}
-          initialContent={document.content}
-        />
-      </div>
-    </div>
-   );
+  return (
+    <>
+      {document?.isLocked && document.isLocked?.length > 0 && !pinConfirm.isUnlocked ? <LockedNote documentId={document._id}/> : <div className="pb-40">
+        <Cover url={document.coverImage} />
+        <div className="md:max-w-3xl lg:max-w-4xl mx-auto">
+          <Toolbar initialData={document} />
+          <Editor
+            onChange={onChange}
+            initialContent={document.content}
+          />
+        </div>
+      </div>}
+    </>
+  );
 }
- 
+
 export default DocumentIdPage;

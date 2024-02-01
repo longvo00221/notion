@@ -1,3 +1,4 @@
+'use client'
 import React from "react";
 import { useQuery } from "convex/react";
 import { useParams } from "next/navigation";
@@ -7,8 +8,9 @@ import { MenuIcon } from "lucide-react";
 import { Title } from "./title";
 import Banner from "./banner";
 import Menu from "./menu";
-import {Publish} from "./publish";
+import { Publish } from "./publish";
 import Pin from "./pin";
+import { useConfirmPin } from "@/hooks/useConfirmPin";
 type NavbarProps = {
   isCollapsed: boolean;
   onResetWidth: () => void;
@@ -19,12 +21,13 @@ const Navbar: React.FC<NavbarProps> = ({ isCollapsed, onResetWidth }) => {
   const document = useQuery(api.documents.getById, {
     documentId: params.documentId as Id<"documents">,
   });
+  const pinConfirm = useConfirmPin()
   if (document === undefined) {
     return (
       <nav className="bg-background dark:bg-[#1F1F1F] px-3 py-2 w-full flex items-center justify-between">
         <Title.Skeleton />
         <div className="flex items-center gap-x-2">
-          <Menu.Skeleton/>
+          <Menu.Skeleton />
         </div>
       </nav>
     );
@@ -34,26 +37,28 @@ const Navbar: React.FC<NavbarProps> = ({ isCollapsed, onResetWidth }) => {
   }
   return (
     <>
-      <nav className="bg-background dark:bg-[#1F1F1F] px-3 py-2 w-full flex items-center gap-x-4">
-        {isCollapsed && (
-          <MenuIcon
-            role="button"
-            onClick={onResetWidth}
-            className="h-6 w-6 text-muted-foreground"
-          />
-        )}
-        <div className="flex items-center justify-between w-full">
-          <Title initalData={document} />
-          <div className="flex items-center gap-x-2">
-            <Publish initialData={document}/>
-            <Pin initialData={document}/>
-            <Menu documentId={document._id}/>
+      {document?.isLocked && document.isLocked?.length > 0 && !pinConfirm.isUnlocked ? <></> : <>
+        <nav className="bg-background dark:bg-[#1F1F1F] px-3 py-2 w-full flex items-center gap-x-4">
+          {isCollapsed && (
+            <MenuIcon
+              role="button"
+              onClick={onResetWidth}
+              className="h-6 w-6 text-muted-foreground"
+            />
+          )}
+          <div className="flex items-center justify-between w-full">
+            <Title initalData={document} />
+            <div className="flex items-center gap-x-2">
+              <Publish initialData={document} />
+              <Pin initialData={document} />
+              <Menu documentId={document._id} />
+            </div>
           </div>
-        </div>
-      </nav>
-      {document.isArchived && (
-        <Banner documentId={document._id}/>
-      )}
+        </nav>
+        {document.isArchived && (
+          <Banner documentId={document._id} />
+        )}
+      </>}
     </>
   );
 };
