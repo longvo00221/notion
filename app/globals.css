@@ -7,7 +7,9 @@ body,
 :root {
   height: 100%;
 }
-
+.cl-internal-phfxlr{
+  height: 680px;
+}
 .cl-internal-b3fm6y,
 .cl-internal-wkkub3 {
   display: none;

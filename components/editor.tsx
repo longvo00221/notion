@@ -42,7 +42,6 @@ interface EditorProps {
 const Editor = ({  onChange, holder ,initialContent,editable}: EditorProps) => {
   const { resolvedTheme } = useTheme();
   const { edgestore } = useEdgeStore();
-
   const handleUpload = async (file: File) => {
     const response = await edgestore.publicFiles.upload({ 
       file
