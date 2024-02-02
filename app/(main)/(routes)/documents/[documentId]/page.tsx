@@ -1,7 +1,7 @@
 "use client";
 import { useMutation, useQuery } from "convex/react";
 import dynamic from "next/dynamic";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import Toolbar from "@/components/toolbar";
@@ -33,8 +33,9 @@ const DocumentIdPage = ({
   });
 
   const update = useMutation(api.documents.update);
-
+ 
   const onChange = (content: string) => {
+  
     update({
       id: params.documentId,
       content
@@ -73,6 +74,8 @@ const DocumentIdPage = ({
           <Toolbar initialData={document} />
           <Editor
             onChange={onChange}
+            holder="editorjs-container"
+         
             initialContent={document.content}
           />
         </div>

@@ -56,29 +56,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ initialData, preview }) => {
   }
 
   return (
-    <div className="pl-[54px] group relative">
-      {!!initialData.icon && !preview && (
-        <div className="flex items-center gap-x-2 group/icon pt-6">
-          <IconPicker onChange={onIconSelect}>
-            <p className="text-6xl hover:opacity-75 transition">
-              {initialData.icon}
-            </p>
-          </IconPicker>
-          <Button
-            onClick={onRemoveIcon}
-            className="rounded-full opacity-0 group-hover/icon:opacity-100 transition text-muted-foreground"
-            variant="outline"
-            size="icon"
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
-      )}
-      {!!initialData.icon && preview && (
-        <p className="text-6xl pt-6">
-          {initialData.icon}
-        </p>
-      )}
+    <div className={`${!!initialData.icon && !preview ? "pl-[0px]" : "px-[54px]" } group relative`}>
       <div className="opacity-0 group-hover:opacity-100 flex items-center gap-x-1 py-4">
         {!initialData.icon && !preview && (
           <IconPicker asChild onChange={onIconSelect}>
@@ -104,6 +82,13 @@ const Toolbar: React.FC<ToolbarProps> = ({ initialData, preview }) => {
           </Button>
         )}
       </div>
+
+      {!!initialData.icon && preview && (
+        <p className="text-6xl pt-6">
+          {initialData.icon}
+        </p>
+      )}
+
       {isEditing && !preview ? (
         <TextareaAutosize
           ref={inputRef}
@@ -114,12 +99,35 @@ const Toolbar: React.FC<ToolbarProps> = ({ initialData, preview }) => {
           className="text-5xl bg-transparent font-bold break-words outline-none text-[#3F3F3F] dark:text-[#CFCFCF] resize-none"
         />
       ) : (
-        <div
-          onClick={enableInput}
-          className="pb-[11.5px] text-5xl font-bold break-words outline-none text-[#3F3F3F] dark:text-[#CFCFCF]"
-        >
-          {initialData.title}
-        </div>
+       
+          <div className="flex items-center pb-[11.5px] pt-6">
+            {!!initialData.icon && !preview && (
+              <div className="flex flex-row-reverse justify-end items-center gap-x-1 group/icon ">
+                <IconPicker onChange={onIconSelect}>
+                  <p className="text-6xl hover:opacity-75 transition">
+                    {initialData.icon}
+                  </p>
+                </IconPicker>
+                <Button
+                  onClick={onRemoveIcon}
+                  className="rounded-full opacity-0 group-hover/icon:opacity-100 transition text-muted-foreground"
+                  variant="outline"
+                  size="icon"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+
+              </div>
+
+            )}
+            <div
+              onClick={enableInput}
+              className=" text-5xl font-bold break-words outline-none text-[#3F3F3F] dark:text-[#CFCFCF]"
+            >
+              {initialData.title}
+            </div>
+          </div>
+
       )}
     </div>
   );
