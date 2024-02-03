@@ -28,20 +28,11 @@ import Underline from '@editorjs/underline';
 
 import { StyleInlineTool } from 'editorjs-style'
 import ChangeCase from 'editorjs-change-case';
-// import {
-//   BlockNoteEditor,
-//   PartialBlock
-// } from "@blocknote/core";
-// import {
-//   BlockNoteView,
-//   useBlockNote
-// } from "@blocknote/react";
-import "@blocknote/react/style.css";
+
 
 import { useEdgeStore } from "@/lib/edgestore";
 
 import { useEffect, useRef } from "react";
-
 import ImageTool from '@editorjs/image';
 import { toast } from "sonner";
 interface EditorProps {
@@ -79,7 +70,7 @@ const Editor = ({ onChange, holder, initialContent, editable }: EditorProps) => 
           style: StyleInlineTool,
 
           table: Table,
-          imageGallery: ImageGallery,
+          // imageGallery:  ImageGallery,
           warning: Warning,
           linkTool: LinkTool,
           code: CodeTool,
@@ -211,6 +202,7 @@ const Editor = ({ onChange, holder, initialContent, editable }: EditorProps) => 
             shortcut: 'CMD+SHIFT+H'
           },
         },
+        
         data: initialContent ? JSON.parse(initialContent) : undefined,
         async onChange(api, event) {
           if (editable) return
