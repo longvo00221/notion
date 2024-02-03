@@ -48,7 +48,7 @@ export const SettingModal = () => {
                             You can edit your profile account
                         </span>
                     </div>
-                    <div className="border p-[9px] rounded-md hover:bg-[#414040] cursor-pointer" onClick={handleOpenProfileModal}><Settings className="h-5 w-5" /></div>
+                    <div className="border p-[9px] rounded-md dark:hover:bg-[#414040] hover:bg-[#f4f4f4] cursor-pointer" onClick={handleOpenProfileModal}><Settings className="h-5 w-5" /></div>
                     {/* <UserButton afterSignOutUrl="/" /> */}
                 </div>
             </DialogContent>

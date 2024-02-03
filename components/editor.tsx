@@ -1,12 +1,8 @@
 "use client";
 import Embed from "@editorjs/embed";
 import Table from "@editorjs/table";
-import List from "@editorjs/list";
-import Paragraph from "@editorjs/paragraph";
 import Warning from "@editorjs/warning";
-import Code from "@editorjs/code";
 import LinkTool from "@editorjs/link";
-import Image from "@editorjs/image";
 import Raw from "@editorjs/raw";
 import Header from "@editorjs/header";
 import Quote from "@editorjs/quote";
@@ -15,111 +11,209 @@ import CheckList from "@editorjs/checklist";
 import Delimiter from "@editorjs/delimiter";
 import InlineCode from "@editorjs/inline-code";
 import SimpleImage from "@editorjs/simple-image";
-import { useTheme } from "next-themes";
-import {
-  BlockNoteEditor,
-  PartialBlock
-} from "@blocknote/core";
-import {
-  BlockNoteView,
-  useBlockNote
-} from "@blocknote/react";
+import LinkAutocomplete from '@editorjs/link-autocomplete'
+import EditorJS from "@editorjs/editorjs";
+import DragDrop from 'editorjs-drag-drop';
+import Undo from 'editorjs-undo';
+import NestedList from '@editorjs/nested-list';
+import Alert from 'editorjs-alert';
+import BreakLine from 'editorjs-break-line';
+import editorjsColumns from '@calumk/editorjs-columns'
+import ImageGallery from '@rodrigoodhin/editorjs-image-gallery'
+import AttachesTool from '@editorjs/attaches';
+import CodeTool from '@editorjs/code';
+import TextVariantTune from '@editorjs/text-variant-tune';
+import AlignmentTuneTool from 'editorjs-text-alignment-blocktune'
+import Underline from '@editorjs/underline';
+
+import { StyleInlineTool } from 'editorjs-style'
+import ChangeCase from 'editorjs-change-case';
+// import {
+//   BlockNoteEditor,
+//   PartialBlock
+// } from "@blocknote/core";
+// import {
+//   BlockNoteView,
+//   useBlockNote
+// } from "@blocknote/react";
 import "@blocknote/react/style.css";
-import { createReactEditorJS } from "react-editor-js";
+
 import { useEdgeStore } from "@/lib/edgestore";
-import { EDITOR_JS_TOOLS } from "./tools";
-import { useCallback, useEffect, useRef, useState } from "react";
-import EditorJS, { OutputData } from "@editorjs/editorjs";
+
+import { useEffect, useRef } from "react";
 
 import ImageTool from '@editorjs/image';
+import { toast } from "sonner";
 interface EditorProps {
   onChange: any;
   initialContent?: string;
   editable?: boolean;
-  holder:string;
+  holder: string;
 };
 
-const Editor = ({  onChange, holder ,initialContent,editable}: EditorProps) => {
-  const { resolvedTheme } = useTheme();
-  const { edgestore } = useEdgeStore();
-  const handleUpload = async (file: File) => {
-    const response = await edgestore.publicFiles.upload({ 
-      file
-    });
+const Editor = ({ onChange, holder, initialContent, editable }: EditorProps) => {
 
-    return response.url;
+  const { edgestore } = useEdgeStore();
+  let column_tools = {
+    header: Header,
+    alert: Alert,
+    paragraph: BreakLine,
+    delimiter: Delimiter
   }
+
 
   const ref = useRef<EditorJS | undefined>();
   useEffect(() => {
-   
+    
     if (!ref.current) {
       const editor = new EditorJS({
         holder: holder,
-        readOnly:editable,
+        placeholder: 'Use command / or click + icon to use tool',
+        readOnly: editable,
+        onReady: () => {
+          new DragDrop(editor);
+          new Undo({ editor });
+        },
         tools: {
-          embed: Embed,
+          textVariant: TextVariantTune,
+          style: StyleInlineTool,
+
           table: Table,
-          list: List,
+          imageGallery: ImageGallery,
           warning: Warning,
-          code: Code,
           linkTool: LinkTool,
+          code: CodeTool,
+          quote: Quote,
+          marker: Marker,
+          checklist: CheckList,
+          delimiter: Delimiter,
+          inlineCode: InlineCode,
+          simpleImage: SimpleImage,
+          raw: Raw,
+          underline: Underline,
+          anyTuneName: {
+            class: AlignmentTuneTool,
+            config: {
+              default: "left",
+              blocks: {
+                header: 'left',
+                list: 'left'
+              }
+            }
+          },
+          paragraph: {
+            tunes: ['textVariant', 'anyTuneName']
+          },
+          changeCase: {
+            class: ChangeCase,
+            config: {
+              showLocaleOption: true,
+              locale: 'tr'
+            }
+          },
+          columns: {
+            class: editorjsColumns,
+            config: {
+              EditorJsLibrary: EditorJS,
+              tools: column_tools
+            }
+          },
+          embed: {
+            class: Embed,
+            config: {
+              services: {
+                youtube: true,
+                coub: true
+              }
+            }
+          },
+          list: {
+            class: NestedList,
+            inlineToolbar: true,
+            config: {
+              defaultStyle: 'unordered'
+            },
+            tunes: ['anyTuneName']
+          },
+          link: {
+            class: LinkAutocomplete,
+            config: {
+              endpoint: 'http://localhost:3000/',
+              queryParam: 'search'
+            }
+          },
           image: {
             class: ImageTool,
             config: {
-            
               uploader: {
                 /**
                  * Upload file to the server and return an uploaded image data
                  * @param {File} file - file selected from the device or pasted by drag-n-drop
                  * @return {Promise.<{success, file: {url}}>}
                  */
-                async uploadByFile(file:any){
-                  const response = await edgestore.publicFiles.upload({ 
-                    file
-                  });
-              
-                  return {
-                    success: 1,
-                    file: {
-                      url: response.url
-                      // any other image data you want to store, such as width, height, color, extension, etc
-                    }}
-                  // your own uploading logic here
-                  // return MyAjax.upload(file).then(() => {
-                  //   return {
-                  //     success: 1,
-                  //     file: {
-                  //       url: 'https://codex.so/upload/redactor_images/o_80beea670e49f04931ce9e3b2122ac70.jpg',
-                  //       // any other image data you want to store, such as width, height, color, extension, etc
-                  //     }
-                  //   };
-                  // });
+                async uploadByFile(file: any) {
+                  try {
+                    const response = await edgestore.publicFiles.upload({
+                      file
+                    });
+                    return {
+                      success: 1,
+                      file: {
+                        url: response.url
+
+                      }
+                    }
+                  } catch (error) {
+                    toast.error("Something went wrong please try again")
+                  }
                 },
-      
-             
               }
             }
           },
-          raw: Raw,
+          attaches: {
+            class: AttachesTool,
+            config: {
+              uploader: {
+                async uploadByFile(file: any) {
+                  try {
+                    const response = await edgestore.publicFiles.upload({
+                      file
+                    });
+                    const urlParts = response.url.split('/');
+                    const fileName = urlParts[urlParts.length - 1];
+                    const [name, ext] = fileName.split('.');
+                    console.log(urlParts)
+                    console.log(name)
+                    return {
+                      success: 1,
+                      file: {
+                        url: response.url,
+                        size: response.size,
+                        name: name,
+                        extension: ext,
+                        title: name
+                      }
+                    }
+                  } catch (error) {
+                    toast.error("Something went wrong please try again")
+                  }
+                }
+              }
+            }
+          },
           header: {
             class: Header,
-            inlineToolbar: [ 'link' ],
+            inlineToolbar: ['link'],
+            tunes: ['anyTuneName'],
             config: {
-                placeholder: 'Header'
+              placeholder: 'Header'
             },
             shortcut: 'CMD+SHIFT+H'
-        },
-          quote: Quote,
-          marker: Marker,
-          checklist: CheckList,
-          delimiter: Delimiter,
-          inlineCode: InlineCode,
-          simpleImage: SimpleImage
+          },
         },
         data: initialContent ? JSON.parse(initialContent) : undefined,
         async onChange(api, event) {
-          if(editable) return
+          if (editable) return
           const data = await api.saver.save();
           onChange(JSON.stringify(data));
         },
@@ -135,10 +229,10 @@ const Editor = ({  onChange, holder ,initialContent,editable}: EditorProps) => {
     };
   }, []);
   return (
-    
+
     <div id={holder} className="prose  max-w-full" />
 
-   
+
   );
 };
 

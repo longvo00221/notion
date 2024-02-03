@@ -7,7 +7,7 @@ body,
 :root {
   height: 100%;
 }
-.cl-internal-phfxlr{
+.cl-userProfile-root{
   height: 680px;
 }
 .cl-internal-b3fm6y,
@@ -158,9 +158,15 @@ h6 {
 }
 
 /* Mặc định cho theme sáng */
-.ce-toolbar__actions{
-  padding-right: 10px;
+.ce-editorjsColumns_col {
+
+  border: 1px solid #ccc;
 }
+.ce-toolbar__actions {
+  background-color: transparent !important;
+  border-radius: 0px !important;
+}
+
 .ce-inline-toolbar,
 .codex-editor--narrow .ce-toolbox,
 .ce-conversion-toolbar,
@@ -220,6 +226,8 @@ h6 {
 .dark .ce-toolbar__settings-btn,
 .dark .cdx-button,
 .dark .ce-popover,
+.dark .cdx-attaches__title,
+.dark .cdx-attaches__download-button,
 .dark .ce-toolbar__plus:hover {
   background: #fff;
   color: #000;
@@ -258,3 +266,10 @@ h6 {
 .dark .cdx-notify__cross::before {
   background: #1a1a1a;
 } 
+
+.dark .style-textarea.cdx-input,
+.dark .class-input.cdx-input ,
+.dark .id-input.cdx-input{
+  background-color: white!important;
+  color: black!important;
+}
