@@ -26,3 +26,9 @@ declare module '@editorjs/text-variant-tune';
 declare module 'editorjs-text-alignment-blocktune';
 declare module '@editorjs/underline';
 declare module 'editorjs-change-case';
+declare module 'editorjs-toggle-block';
+declare module '@sotaproject/strikethrough';
+
+
+
+declare module 'react-big-calendar';

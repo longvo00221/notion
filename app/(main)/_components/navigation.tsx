@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import {
+  Calendar,
   ChevronsLeft,
   ChevronsRight,
   MenuIcon,
@@ -118,6 +119,7 @@ const Navigation: React.FC<NavigationProps> = () => {
       error: "Failed to create a new note",
     });
   };
+
   return (
     <>
       <aside
@@ -147,23 +149,29 @@ const Navigation: React.FC<NavigationProps> = () => {
         <div className="mt-4">
           <DocumentList />
           <Item onClick={handleCreateNote} label="Add a page" icon={Plus} />
-          <Popover>
-            <PopoverTrigger className="w-full mt-4">
-              <Item label="Trash" icon={Trash} />
-              <PopoverContent
-                className="p-0 w-72 "
-                side={isMobile ? "bottom" : "right"}
-              >
-                <TrashBox />
-              </PopoverContent>
-            </PopoverTrigger>
-          </Popover>
+          <div className="mt-4">
+            <div>
+              <Item label="Calendar" icon={Calendar} onClick={() => { router.push('/calendar') }} />
+            </div>
+            <Popover>
+              <PopoverTrigger className="w-full">
+                <Item label="Trash" icon={Trash} />
+                <PopoverContent
+                  className="p-0 w-72 "
+                  side={isMobile ? "bottom" : "right"}
+                >
+                  <TrashBox />
+                </PopoverContent>
+              </PopoverTrigger>
+            </Popover>
+          </div>
         </div>
         <div
           onMouseDown={(e) => handleMouseDown(e)}
           onDoubleClick={() => resetWidth()}
           className="opacity-0 group-hover/sidebar:opacity-100 transition cursor-ew-resize absolute h-full w-1 bg-primary/10 right-0 top-0"
         />
+      
       </aside>
 
       <div
@@ -194,6 +202,7 @@ const Navigation: React.FC<NavigationProps> = () => {
           </nav>
         )}
       </div>
+      
     </>
   );
 };
