@@ -10,6 +10,7 @@ import { EdgeStoreProvider } from "../lib/edgestore";
 
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from '@vercel/analytics/react';
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -41,22 +42,25 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <ConvexClientProvider>
-          <EdgeStoreProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-              storageKey="jotion-theme-2"
-            >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+          storageKey="jotion-theme-2"
+        >
+          <ConvexClientProvider >
+            <EdgeStoreProvider>
+
               <Toaster position="bottom-center" />
               <ModalProvider />
               {children}
               <SpeedInsights />
-            </ThemeProvider>
-          </EdgeStoreProvider>
-        </ConvexClientProvider>
+              <Analytics />
+
+            </EdgeStoreProvider>
+          </ConvexClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
