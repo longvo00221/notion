@@ -59,6 +59,7 @@ export const create = mutation({
         title: v.string(),
         content:v.optional(v.string()),
         coverImage:v.optional(v.string()),
+        icon:v.optional(v.string()),
         parentDocument: v.optional(v.id("documents"))
     },
     handler: async (ctx, args) => {
@@ -71,6 +72,7 @@ export const create = mutation({
             title: args.title,
             content:args.content,
             coverImage:args.coverImage,
+            icon:args.icon,
             parentDocument: args.parentDocument,
             userId,
             isArchived: false,

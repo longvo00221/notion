@@ -19,7 +19,8 @@ const Heading = () => {
     const promise = create({
       title: defaultDocument.title,
       content: defaultDocument.content,
-      coverImage:defaultDocument.coverImage
+      coverImage:defaultDocument.coverImage,
+      icon:defaultDocument.icon
     }).then((documentId)=>{router.push(`/documents/${documentId}`)})
     toast.promise(promise,{
       loading:"Creating a guide note...",
