@@ -7,9 +7,11 @@ body,
 :root {
   height: 100%;
 }
-.cl-userProfile-root{
+
+.cl-userProfile-root {
   height: 680px;
 }
+
 .cl-internal-b3fm6y,
 .cl-internal-wkkub3 {
   display: none;
@@ -133,28 +135,35 @@ html *::-webkit-scrollbar-track {
     @apply bg-background text-foreground;
   }
 }
+
 h1 {
-  font-size: 24px !important; /* Adjust the font size for h1 */
+  font-size: 24px !important;
+  /* Adjust the font size for h1 */
 }
 
 h2 {
-  font-size: 22px !important; /* Adjust the font size for h2 */
+  font-size: 22px !important;
+  /* Adjust the font size for h2 */
 }
 
 h3 {
-  font-size: 20px !important; /* Adjust the font size for h3 */
+  font-size: 20px !important;
+  /* Adjust the font size for h3 */
 }
 
 h4 {
-  font-size: 18px !important; /* Adjust the font size for h4 */
+  font-size: 18px !important;
+  /* Adjust the font size for h4 */
 }
 
 h5 {
-  font-size: 16px !important; /* Adjust the font size for h5 */
+  font-size: 16px !important;
+  /* Adjust the font size for h5 */
 }
 
 h6 {
-  font-size: 14px !important; /* Adjust the font size for h6 */
+  font-size: 14px !important;
+  /* Adjust the font size for h6 */
 }
 
 /* Mặc định cho theme sáng */
@@ -162,6 +171,7 @@ h6 {
 
   border: 1px solid #ccc;
 }
+
 .ce-toolbar__actions {
   background-color: transparent !important;
   border-radius: 0px !important;
@@ -179,9 +189,11 @@ h6 {
   background: #fff;
   color: inherit;
 }
-.ce-block--selected  .ce-block__content{
+
+.ce-block--selected .ce-block__content {
   background-color: transparent;
 }
+
 .ce-inline-tool,
 .ce-conversion-toolbar__label,
 .ce-toolbox__button,
@@ -218,25 +230,71 @@ h6 {
 
 /* Chế độ tối */
 
-.dark .ce-inline-toolbar,
+
 .dark .codex-editor--narrow .ce-toolbox,
 .dark .ce-conversion-toolbar,
 .dark .ce-settings,
 .dark .ce-settings__button,
-.dark .ce-toolbar__settings-btn,
 .dark .cdx-button,
-.dark .ce-popover,
 .dark .cdx-attaches__title,
-.dark .cdx-attaches__download-button,
-.dark .ce-toolbar__plus:hover {
+.dark .cdx-attaches__download-button{
   background: #fff;
   color: #000;
 }
+.dark .ce-toolbar__settings-btn{
+  background-color: transparent;
+  color: #616161;
 
+}
+
+
+.dark .ce-popover,
+.dark .ce-inline-toolbar {
+  background-color: #1f1f1f;
+  box-shadow: 0 4px 12px #0f0f0f;
+  border:1px solid #161616;
+}
+.ce-popover{
+  width: 375px;
+  top: 40px;
+}
+.ce-popover-item__icon {
+  width: 34px;
+  height: 34px;
+}
+.dark .ce-popover-item ,
 .dark .ce-inline-tool,
+.dark .cdx-settings-button,
+.dark .cdx-text-variant__toggler{
+  background-color: #1f1f1f;
+
+  color: #fff;
+}
+.dark .ce-popover-item:hover{
+  background-color: #000;
+}
+.dark .ce-popover-item__icon{
+  background: #000;
+  border: none;
+}
+.dark .ce-popover-item__secondary-title{
+  background: black;
+  color: #fff;
+  padding-bottom: 1px;
+  padding-top: 1px;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: 10px;
+  border-radius: 20px;
+}
+.dark .cdx-search-field__input,
+.dark .ce-popover__search{
+  background-color: #000;
+}
+
 .dark .ce-conversion-toolbar__label,
 .dark .ce-toolbox__button,
-.dark .cdx-settings-button,
+
 .dark .ce-toolbar__plus {
   color: #616161;
 }
@@ -253,7 +311,8 @@ h6 {
 .dark .ce-inline-toolbar__dropdown:hover,
 .dark .ce-inline-tool:hover,
 .dark .ce-popover__item:hover,
-.dark .ce-toolbar__settings-btn:hover {
+.dark .ce-toolbar__settings-btn:hover,
+.dark .ce-toolbar__plus:hover {
   background-color: #4d4d4d;
   color: #fff;
 }
@@ -265,11 +324,11 @@ h6 {
 .dark .cdx-notify__cross::after,
 .dark .cdx-notify__cross::before {
   background: #1a1a1a;
-} 
+}
 
 .dark .style-textarea.cdx-input,
-.dark .class-input.cdx-input ,
-.dark .id-input.cdx-input{
-  background-color: white!important;
-  color: black!important;
+.dark .class-input.cdx-input,
+.dark .id-input.cdx-input {
+  background-color: white !important;
+  color: black !important;
 }

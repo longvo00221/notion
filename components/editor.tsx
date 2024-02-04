@@ -19,22 +19,19 @@ import NestedList from '@editorjs/nested-list';
 import Alert from 'editorjs-alert';
 import BreakLine from 'editorjs-break-line';
 import editorjsColumns from '@calumk/editorjs-columns'
-import ImageGallery from '@rodrigoodhin/editorjs-image-gallery'
+// import ImageGallery from '@rodrigoodhin/editorjs-image-gallery'
 import AttachesTool from '@editorjs/attaches';
 import CodeTool from '@editorjs/code';
 import TextVariantTune from '@editorjs/text-variant-tune';
 import AlignmentTuneTool from 'editorjs-text-alignment-blocktune'
 import Underline from '@editorjs/underline';
-
-import { StyleInlineTool } from 'editorjs-style'
 import ChangeCase from 'editorjs-change-case';
-
-
 import { useEdgeStore } from "@/lib/edgestore";
 
 import { useEffect, useRef } from "react";
 import ImageTool from '@editorjs/image';
 import { toast } from "sonner";
+import { useTheme } from "next-themes";
 interface EditorProps {
   onChange: any;
   initialContent?: string;
@@ -52,10 +49,10 @@ const Editor = ({ onChange, holder, initialContent, editable }: EditorProps) => 
     delimiter: Delimiter
   }
 
-
+  const { resolvedTheme } = useTheme()
   const ref = useRef<EditorJS | undefined>();
   useEffect(() => {
-    
+
     if (!ref.current) {
       const editor = new EditorJS({
         holder: holder,
@@ -67,7 +64,6 @@ const Editor = ({ onChange, holder, initialContent, editable }: EditorProps) => 
         },
         tools: {
           textVariant: TextVariantTune,
-          style: StyleInlineTool,
 
           table: Table,
           // imageGallery:  ImageGallery,
@@ -114,7 +110,8 @@ const Editor = ({ onChange, holder, initialContent, editable }: EditorProps) => 
             config: {
               services: {
                 youtube: true,
-                coub: true
+                coub: true,
+                codepen:true
               }
             }
           },
@@ -194,15 +191,17 @@ const Editor = ({ onChange, holder, initialContent, editable }: EditorProps) => 
           },
           header: {
             class: Header,
-            inlineToolbar: ['link'],
+            inlineToolbar: true,
+
             tunes: ['anyTuneName'],
             config: {
+
               placeholder: 'Header'
             },
             shortcut: 'CMD+SHIFT+H'
           },
         },
-        
+
         data: initialContent ? JSON.parse(initialContent) : undefined,
         async onChange(api, event) {
           if (editable) return
