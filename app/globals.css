@@ -203,10 +203,6 @@ h6 {
   color: inherit;
 }
 
-::selection {
-  background: #000;
-}
-
 .cdx-settings-button:hover,
 .ce-settings__button:hover,
 .ce-toolbox__button--active,

@@ -115,8 +115,8 @@ const CalendarPage:React.FC<CalendarPageProps> = () => {
   
     return (
       <>
-        <nav className="flex justify-between mb-12 shadow-md border-violet-100 dark:bg-[#161616] p-4">
-          <h1 className="font-bold text-2xl text-gray-700 dark:text-white">Calendar</h1>
+        <nav className="flex justify-between mb-12 shadow-md border-violet-100 dark:bg-[#161616] px-2 py-[5px]">
+          <h1 className="font-bold pl-10 text-2xl text-gray-700 dark:text-white">Calendar</h1>
         </nav>
         <main className="flex min-h-screen flex-col items-center justify-between p-24">
           <div className="grid grid-cols-10">
