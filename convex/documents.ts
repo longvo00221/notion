@@ -97,6 +97,21 @@ export const getTrash = query({
         return documents
     }
 })
+export const getFavorite = query({
+    handler: async (ctx) => {
+        const identity = await ctx.auth.getUserIdentity();
+        if (!identity) {
+            throw new Error("Not authenticated")
+        }
+        const userId = identity.subject;
+        const documents = await ctx.db.query("documents")
+            .withIndex("by_user", (q) => q.eq("userId", userId))
+            .filter((q) => q.eq(q.field("isFavorite"), true))
+            .order("desc")
+            .collect()
+        return documents
+    }
+})
 export const restore = mutation({
     args: { id: v.id("documents") },
     handler: async (ctx, args) => {
@@ -203,7 +218,8 @@ export const update = mutation({
         coverImage: v.optional(v.string()),
         icon: v.optional(v.string()),
         isPublished: v.optional(v.boolean()),
-        isLocked: v.optional(v.array(v.string()))
+        isLocked: v.optional(v.array(v.string())),
+        isFavorite:v.optional(v.boolean())
     },
     handler: async (ctx, args) => {
         const identity = await ctx.auth.getUserIdentity()

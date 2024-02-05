@@ -1,8 +1,8 @@
 "use client";
 import { Id } from "@/convex/_generated/dataModel";
 import { cn } from "@/lib/utils";
-import { ChevronDown, ChevronRight, Lock, LucideIcon, MoreHorizontal, Plus, Trash } from "lucide-react";
-import React from "react";
+import { ChevronDown, ChevronRight, Copy, ExternalLink, Heart, HeartCrack, Lock, LucideIcon, MoreHorizontal, Plus, Trash } from "lucide-react";
+import React, { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useMutation } from 'convex/react'
 import { api } from "@/convex/_generated/api";
@@ -17,6 +17,8 @@ import {
 }
   from "@/components/ui/dropdown-menu";
 import { useUser } from "@clerk/clerk-react";
+import { useConfirmPin } from "@/hooks/useConfirmPin";
+import { useOrigin } from "@/hooks/useOrigin";
 type ItemProps = {
   id?: Id<"documents">;
   documentIcon?: String;
@@ -27,6 +29,11 @@ type ItemProps = {
   level?: number;
   label: String;
   onClick?: () => void;
+  isFav?: boolean | undefined;
+  content?: string;
+  iconDoc?: string;
+  title?: string;
+  coverImage?: string;
   isLocked?: any
   icon: LucideIcon;
 };
@@ -43,12 +50,20 @@ export const Item: React.FC<ItemProps> & ItemStaticProps = ({
   expanded,
   isLocked,
   id,
+  isFav,
+  content,
+  iconDoc,
+  coverImage,
   onExpand,
+  title,
   level = 0,
 }) => {
 
   const create = useMutation(api.documents.create)
+  const pinConfirm = useConfirmPin()
+  const update = useMutation(api.documents.update)
   const user = useUser()
+  const origin = useOrigin();
   const router = useRouter()
   const archive = useMutation(api.documents.archive)
   const onArchive = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -60,6 +75,56 @@ export const Item: React.FC<ItemProps> & ItemStaticProps = ({
       success: "Note moved to trash!",
       error: "Failed to archive note."
     })
+  }
+  const onFavorite = () => {
+    if (isFav) {
+      const promise = update({
+        id: id as Id<"documents">,
+        isFavorite: false
+      })
+      toast.promise(promise, {
+        loading: "Removing note from favorite list...",
+        success: "Remove successfully",
+        error: "Failed to remove "
+      })
+    } else {
+      const promise = update({
+        id: id as Id<"documents">,
+        isFavorite: true
+      })
+      toast.promise(promise, {
+        loading: "Adding to favorite list...",
+        success: "Add to favorite success",
+        error: "Failed to add to favorite"
+      })
+    }
+
+  }
+  const onDuplicate = () => {
+
+    if (isLocked && isLocked.length > 0 && !pinConfirm.isUnlocked) {
+      toast.warning("The duplicated note won't have a pin. To continue, enter your pin first")
+
+
+      pinConfirm.onOpen(id as Id<"documents">)
+    } else {
+      const promise = create({
+        title: title + "",
+        content: content,
+        icon: iconDoc,
+        coverImage: coverImage
+      }).then((documentId) => router.push(`/documents/${documentId}`))
+      toast.promise(promise, {
+        loading: "Duplicating a note...",
+        success: "Duplicated",
+        error: "Failed to duplicate a note"
+      })
+    }
+
+  }
+  const onOpenInNewtab = () => {
+    const url = `${origin}/documents/${id}`
+    window.open(url, '_blank');
   }
   const handleExpand = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -135,11 +200,33 @@ export const Item: React.FC<ItemProps> & ItemStaticProps = ({
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent
-              className="w-60"
+              className="w-48"
               align="start"
               side="right"
               forceMount
             >
+              <DropdownMenuItem onClick={onFavorite}>
+                {
+                  isFav ?
+                    <div className="flex items-center dark:text-white/75 text-black">
+                      <HeartCrack className="h-4 w-4 mr-2 " />
+                      Remove favorite
+                    </div> :
+                    <div className="flex items-center dark:text-white/75 text-black" >
+                      <Heart className="h-4 w-4 mr-2 " />
+                      Add to favorite
+                    </div>
+
+                }
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={onDuplicate}>
+                <Copy className="h-4 w-4 mr-2" />
+                Duplicate
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={onOpenInNewtab}>
+                <ExternalLink className="h-4 w-4 mr-2" />
+                Open in new tab
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={(event) => { onArchive(event) }}>
                 <Trash className="h-4 w-4 mr-2" />
                 Delete

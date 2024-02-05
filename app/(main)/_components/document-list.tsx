@@ -72,7 +72,12 @@ const DocumentList: React.FC<DocumentListProps> = ({
         <div key={doc._id}>
           <Item
             id={doc._id}
+            isFav={doc.isFavorite}
             isLocked={doc.isLocked}
+            content={doc.content}
+            iconDoc={doc.icon}
+            title={doc.title}
+            coverImage={doc.coverImage}
             onClick={() => onRedirect(doc._id, doc.isLocked)}
             label={doc.title}
             icon={FileIcon}

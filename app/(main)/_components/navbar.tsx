@@ -1,16 +1,18 @@
 'use client'
 import React from "react";
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { useParams } from "next/navigation";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import { MenuIcon } from "lucide-react";
+import { Heart, HeartCrack, MenuIcon } from "lucide-react";
 import { Title } from "./title";
 import Banner from "./banner";
 import Menu from "./menu";
 import { Publish } from "./publish";
 import Pin from "./pin";
 import { useConfirmPin } from "@/hooks/useConfirmPin";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 type NavbarProps = {
   isCollapsed: boolean;
   onResetWidth: () => void;
@@ -21,6 +23,8 @@ const Navbar: React.FC<NavbarProps> = ({ isCollapsed, onResetWidth }) => {
   const document = useQuery(api.documents.getById, {
     documentId: params.documentId as Id<"documents">,
   });
+  const update = useMutation(api.documents.update)
+
   const pinConfirm = useConfirmPin()
   if (document === undefined) {
     return (
@@ -31,6 +35,30 @@ const Navbar: React.FC<NavbarProps> = ({ isCollapsed, onResetWidth }) => {
         </div>
       </nav>
     );
+  }
+  const onFavorite = () => {
+    if (document.isFavorite) {
+      const promise = update({
+        id: document._id as Id<"documents">,
+        isFavorite: false
+      })
+      toast.promise(promise, {
+        loading: "Removing note from favorite list...",
+        success: "Remove successfully",
+        error: "Failed to remove "
+      })
+    } else {
+      const promise = update({
+        id: document._id as Id<"documents">,
+        isFavorite: true
+      })
+      toast.promise(promise, {
+        loading: "Adding to favorite list...",
+        success: "Add to favorite success",
+        error: "Failed to add to favorite"
+      })
+    }
+
   }
   if (document === null) {
     return null;
@@ -49,6 +77,18 @@ const Navbar: React.FC<NavbarProps> = ({ isCollapsed, onResetWidth }) => {
           <div className="flex items-center justify-between w-full">
             <Title initalData={document} />
             <div className="flex items-center gap-x-2">
+              <div>
+                {
+                  document.isFavorite ?
+                    <Button onClick={onFavorite} variant="ghost" className="px-3 py-2">
+                      <HeartCrack className="h-5 w-5 " />
+                    </Button > :
+                    <Button onClick={onFavorite} variant="ghost" className="px-3 py-2">
+                      <Heart className="h-5 w-5 " />
+                    </Button >
+
+                }
+              </div>
               <Publish initialData={document} />
               <Pin initialData={document} />
               <Menu documentId={document._id} />

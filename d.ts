@@ -28,7 +28,10 @@ declare module '@editorjs/underline';
 declare module 'editorjs-change-case';
 declare module 'editorjs-toggle-block';
 declare module '@sotaproject/strikethrough';
-
+declare module 'editorjs-button';
 
 
 declare module 'react-big-calendar';
+
+
+declare module 'uuid';
