@@ -13,13 +13,33 @@ import { ModeToggle } from "@/components/mode-toggle"
 import { UserButton, } from "@clerk/clerk-react";
 import { Settings } from "lucide-react"
 import { useUserProfile } from "@/hooks/useUserProfile"
+import { Switch } from "@/components/ui/switch"
+import { useEffect, useState } from "react"
 export const SettingModal = () => {
     const setting = useSetting()
     const useProfile = useUserProfile()
+    const [isSyncTheme,setIsSyncTheme] = useState<boolean | undefined>(false)
     const handleOpenProfileModal = () => {
         useProfile.onOpen()
         setting.onClose()
     }
+    useEffect(() => {
+
+        const storedIsSyncTheme = localStorage.getItem('isSyncTheme');
+        if (storedIsSyncTheme) {
+            setIsSyncTheme(JSON.parse(storedIsSyncTheme));
+        }
+    }, []);
+    const toggleSyncWithDevice = () => {
+       try {
+        const newSyncTheme = !isSyncTheme;
+        setIsSyncTheme(newSyncTheme);
+        localStorage.setItem('isSyncTheme', JSON.stringify(newSyncTheme));
+        window.location.reload()
+       } catch (error) {
+        console.log(error)
+       }
+    };
     return (
         <Dialog open={setting.isOpen} onOpenChange={setting.onClose}>
             <DialogContent className="dark:text-white/75 text-black">
@@ -38,6 +58,21 @@ export const SettingModal = () => {
                         </span>
                     </div>
                     <ModeToggle />
+                </div>
+                <div className="flex items-center justify-between">
+                    <div className="flex flex-col gap-y-1">
+                        <Label>
+                            Sync Theme
+                        </Label>
+                        <span className="text-[0.8rem] text-muted-foreground">
+                            This setting will make theme synchronized with your device
+                        </span>
+                    </div>
+                    <Switch
+                      checked={isSyncTheme}
+                      onCheckedChange={toggleSyncWithDevice}
+                    
+                    />
                 </div>
                 <div className="flex items-center justify-between">
                     <div className="flex flex-col gap-y-1">

@@ -19,6 +19,9 @@ import NestedList from '@editorjs/nested-list';
 import Alert from 'editorjs-alert';
 import BreakLine from 'editorjs-break-line';
 import editorjsColumns from '@calumk/editorjs-columns'
+import Strikethrough from '@sotaproject/strikethrough';
+import ToggleBlock from 'editorjs-toggle-block';
+import anyButton  from 'editorjs-button'
 // import ImageGallery from '@rodrigoodhin/editorjs-image-gallery'
 import AttachesTool from '@editorjs/attaches';
 import CodeTool from '@editorjs/code';
@@ -64,7 +67,7 @@ const Editor = ({ onChange, holder, initialContent, editable }: EditorProps) => 
         },
         tools: {
           textVariant: TextVariantTune,
-
+          strikethrough: Strikethrough,
           table: Table,
           // imageGallery:  ImageGallery,
           warning: Warning,
@@ -72,12 +75,29 @@ const Editor = ({ onChange, holder, initialContent, editable }: EditorProps) => 
           code: CodeTool,
           quote: Quote,
           marker: Marker,
-          checklist: CheckList,
+        
           delimiter: Delimiter,
           inlineCode: InlineCode,
           simpleImage: SimpleImage,
           raw: Raw,
           underline: Underline,
+          AnyButton: {
+            class: anyButton,
+            inlineToolbar: false,
+            config:{
+              css:{
+                "btnColor": "btn--gray",
+              }
+            }
+          },
+          checklist: {
+            class: CheckList,
+            inlineToolbar: true,
+          },
+          toggle: {
+            class: ToggleBlock,
+            inlineToolbar: true,
+          },
           anyTuneName: {
             class: AlignmentTuneTool,
             config: {

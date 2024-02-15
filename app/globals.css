@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 html,
 body,
 :root {
@@ -202,10 +203,6 @@ h6 {
   color: inherit;
 }
 
-::selection {
-  background: #000;
-}
-
 .cdx-settings-button:hover,
 .ce-settings__button:hover,
 .ce-toolbox__button--active,
@@ -331,4 +328,99 @@ h6 {
 .dark .id-input.cdx-input {
   background-color: white !important;
   color: black !important;
+}
+
+.fc-button-primary{
+  border: 1px solid #f0f0f0!important;
+  --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  background: #fff!important;
+  color: #000!important;
+}
+.dark .fc-button-primary{
+  border: 1px solid transparent!important;
+  text-transform: capitalize;
+  background: #000 !important;
+  color: #fff!important;
+}
+.dark .fc-button-primary:hover{
+  background-color: #000;
+  border:1px solid #fff!important
+}
+.dark .fc .fc-daygrid-day.fc-day-today{
+  background-color: rgba(0, 0, 0, 0.45)!important;
+  color: #dfdfdf;
+}
+.fc .fc-daygrid-day.fc-day-today{
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.05)!important;
+  color: #474747;
+}
+.fc .fc-daygrid-day.fc-day-today::before{
+  content: "Today";
+ 
+  position: absolute;
+  top: 0;
+  left: 3px;
+}
+.fc-view{
+  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.dark .fc-view{
+ background-color: #161616;
+}
+.anyButtonContainer__anyButtonHolder .btn{
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #f1f1f1;
+  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.anyButtonContainer__anyButtonHolder .btn:hover{
+ opacity: 0.9;
+}
+.dark .anyButtonContainer__anyButtonHolder .btn{
+  background-color: #000;
+  border: none;
+  color: #fff;
+  
+}
+
+
+.phone {
+  height: 50px;
+  width: 100px;
+  border: 3px solid white;
+  border-radius: 10px;
+  animation: rotate 1.5s ease-in-out infinite alternate;
+  /* display: none; */
+}
+
+.message {
+  color: white;
+  font-size: 1em;
+  margin-top: 40px;
+  /* display: none; */
+}
+
+@keyframes rotate {
+  0% {
+		transform: rotate(0deg)
+	}
+	50% {
+		transform: rotate(-90deg)
+	}
+	100% {
+		transform: rotate(-90deg)
+	}
+}
+
+@media only screen and (max-device-width: 812px) and (orientation: landscape) {
+  .phone, .message {
+    display: block;
+  }
 }
