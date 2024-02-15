@@ -52,7 +52,7 @@ const ListTasks: React.FC<ListTasksProps> = ({ tasks, setTasks }) => {
   const statuses = ["todo", "inprogress", "closed"];
 
   return (
-    <div className='flex gap-16'>
+    <div className='flex md:gap-16 gap-10'>
       {statuses.map((status, index) => (
         <Section
           key={index}
@@ -105,7 +105,7 @@ const Section: React.FC<ListTasksSectionProps> = ({ status, tasks, setTasks, tod
     })
   }
   return (
-    <div ref={drop} className={`w-64 rounded-md p-2 ${isOver ? "shadow-lg" : ""}`}>
+    <div ref={drop} className={`md:w-64 w-52 rounded-md p-2 ${isOver ? "shadow-lg" : ""}`}>
       <Header text={text} bg={bg} count={tasksToMap.length} />
       {tasksToMap.length > 0 && tasksToMap.map(task => <TaskItem task={task} key={task.id} tasks={tasks} setTasks={setTasks} />)}
     </div>

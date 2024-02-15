@@ -75,7 +75,7 @@ const CreateTask: React.FC<CreateTaskProps> = ({ tasks, setTasks }) => {
     
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="gap-2 w-1/2 flex items-center justify-center mb-5">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="gap-2 w-full md:w-1/2 flex items-center justify-center mb-5">
                 <FormField
                     control={form.control}
                     name="task"
