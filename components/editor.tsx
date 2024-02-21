@@ -72,7 +72,6 @@ const Editor = ({ onChange, holder, initialContent, editable }: EditorProps) => 
           textVariant: TextVariantTune,
           strikethrough: Strikethrough,
           table: Table,
-          // imageGallery:  ImageGallery,
          annotation:Annotation,
           warning: Warning,
           linkTool: LinkTool,
