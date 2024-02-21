@@ -29,7 +29,7 @@ declare module 'editorjs-change-case';
 declare module 'editorjs-toggle-block';
 declare module '@sotaproject/strikethrough';
 declare module 'editorjs-button';
-
+declare module '@/dist/bundle'
 declare module 'react-big-calendar';
 
 
