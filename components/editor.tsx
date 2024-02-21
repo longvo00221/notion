@@ -35,6 +35,7 @@ import { useEffect, useRef } from "react";
 import ImageTool from '@editorjs/image';
 import { toast } from "sonner";
 import { useTheme } from "next-themes";
+import Annotation from "@/dist/bundle";
 interface EditorProps {
   onChange: any;
   initialContent?: string;
@@ -65,22 +66,24 @@ const Editor = ({ onChange, holder, initialContent, editable }: EditorProps) => 
           new DragDrop(editor);
           new Undo({ editor });
         },
+        
         tools: {
           textVariant: TextVariantTune,
           strikethrough: Strikethrough,
           table: Table,
           // imageGallery:  ImageGallery,
+         annotation:Annotation,
           warning: Warning,
           linkTool: LinkTool,
           code: CodeTool,
           quote: Quote,
           marker: Marker,
-        
           delimiter: Delimiter,
           inlineCode: InlineCode,
           simpleImage: SimpleImage,
           raw: Raw,
           underline: Underline,
+        
           AnyButton: {
             class: anyButton,
             inlineToolbar: false,

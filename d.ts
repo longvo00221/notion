@@ -30,7 +30,6 @@ declare module 'editorjs-toggle-block';
 declare module '@sotaproject/strikethrough';
 declare module 'editorjs-button';
 
-
 declare module 'react-big-calendar';
 
 

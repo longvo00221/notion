@@ -65,6 +65,7 @@
     "editorjs-button": "^1.0.4",
     "editorjs-change-case": "^0.0.3",
     "editorjs-drag-drop": "^1.1.13",
+    "editorjs-indent-tune": "^1.0.11",
     "editorjs-text-alignment-blocktune": "^1.0.3",
     "editorjs-toggle-block": "^0.3.14",
     "editorjs-undo": "^1.0.1",
