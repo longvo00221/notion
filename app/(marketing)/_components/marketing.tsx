@@ -1,4 +1,4 @@
-import React from 'react';
+
 import Heading from './heading';
 import Heroes from './heroes';
 import Footer from './footer';

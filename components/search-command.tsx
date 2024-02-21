@@ -5,15 +5,12 @@ import { useQuery } from "convex/react"
 import { useRouter } from "next/navigation"
 import { useUser } from "@clerk/clerk-react"
 import {
-    Command,
     CommandDialog,
     CommandEmpty,
     CommandGroup,
     CommandInput,
     CommandItem,
     CommandList,
-    CommandSeparator,
-    CommandShortcut
 } from "@/components/ui/command"
 import { useSearch } from "@/hooks/useSearch"
 import { api } from "@/convex/_generated/api"

@@ -5,7 +5,6 @@ import { redirect } from "next/navigation";
 import React from "react";
 import Navigation from "./_components/navigation";
 import { SearchCommand } from "@/components/search-command";
-import { useTheme } from "next-themes";
 import { ToggleThemeMatchWithWindow } from "@/components/toggle-them-match-window";
 
 type MainLayoutProps = {

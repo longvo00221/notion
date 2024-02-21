@@ -2,7 +2,7 @@
 import { Id } from "@/convex/_generated/dataModel";
 import { cn } from "@/lib/utils";
 import { ChevronDown, ChevronRight, Copy, ExternalLink, Heart, HeartCrack, Lock, LucideIcon, MoreHorizontal, Plus, Trash } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useMutation } from 'convex/react'
 import { api } from "@/convex/_generated/api";

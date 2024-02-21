@@ -2,11 +2,8 @@ import React from 'react';
 import { UserProfile } from '@clerk/clerk-react';
 import {
     Dialog,
-
     DialogContent,
-
     DialogHeader,
-
 } from "@/components/ui/dialog"
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { X } from 'lucide-react';

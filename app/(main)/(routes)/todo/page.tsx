@@ -1,8 +1,6 @@
 'use client'
 import CreateTask from '@/components/creatTask';
 import ListTasks from '@/components/listTask';
-import { Button } from '@/components/ui/button';
-import { X } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'

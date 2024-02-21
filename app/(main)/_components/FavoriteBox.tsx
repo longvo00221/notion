@@ -1,15 +1,12 @@
 'use client'
-import { ConfirmModal } from '@/components/modals/confirm-modal'
 import { Spinner } from '@/components/spinner'
 import { Input } from '@/components/ui/input'
 import { api } from '@/convex/_generated/api'
-import { Id } from '@/convex/_generated/dataModel'
 import { useConfirmPin } from '@/hooks/useConfirmPin'
-import { useQuery, useMutation } from 'convex/react'
-import { Search, Trash, Undo } from 'lucide-react'
-import { useParams, useRouter } from 'next/navigation'
+import { useQuery} from 'convex/react'
+import { Search} from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
-import { toast } from 'sonner'
 type FavoriteBoxtype = {}
 const FavoriteBox: React.FC<FavoriteBoxtype> = () => {
     const router = useRouter()

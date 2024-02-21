@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button';
 import { Id } from '@/convex/_generated/dataModel';
 import { useConfirmPin } from '@/hooks/useConfirmPin';
 import { Lock } from 'lucide-react';
-import { useParams } from 'next/navigation';
 import React, { useEffect } from 'react';
 
 

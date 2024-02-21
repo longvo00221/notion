@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { SignInButton } from "@clerk/clerk-react";
 import { useConvexAuth, useMutation } from "convex/react";
 import { ArrowRight } from "lucide-react";
-import Link from "next/link";
 import React from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/convex/_generated/api";

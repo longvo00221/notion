@@ -1,16 +1,12 @@
 'use client'
 import {
     Dialog,
-
     DialogContent,
-
     DialogHeader,
-
 } from "@/components/ui/dialog"
 import { useSetting } from "@/hooks/useSetting"
 import { Label } from "@/components/ui/label"
 import { ModeToggle } from "@/components/mode-toggle"
-import { UserButton, } from "@clerk/clerk-react";
 import { Settings } from "lucide-react"
 import { useUserProfile } from "@/hooks/useUserProfile"
 import { Switch } from "@/components/ui/switch"
