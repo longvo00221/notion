@@ -35,7 +35,7 @@ import { useEffect, useRef } from "react";
 import ImageTool from '@editorjs/image';
 import { toast } from "sonner";
 import { useTheme } from "next-themes";
-// import Annotation from "@/dist/bundle";
+import Annotation from "@/dist/bundle";
 interface EditorProps {
   onChange: any;
   initialContent?: string;
@@ -72,7 +72,7 @@ const Editor = ({ onChange, holder, initialContent, editable }: EditorProps) => 
           strikethrough: Strikethrough,
           table: Table,
           // imageGallery:  ImageGallery,
-        //  annotation:Annotation,
+         annotation:Annotation,
           warning: Warning,
           linkTool: LinkTool,
           code: CodeTool,
