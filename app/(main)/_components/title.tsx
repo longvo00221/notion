@@ -63,7 +63,7 @@ export const Title: TitleComponent = ({initalData}) => {
                 size="sm"
                 className='font-normal h-auto p-1'
                 >
-                    <span className='truncate dark:text-white/75 text-black '>
+                    <span className='truncate md:max-w-[200px] max-w-[100px] dark:text-white/75 text-black '>
                         {initalData?.title}
                     </span>
                 </Button>

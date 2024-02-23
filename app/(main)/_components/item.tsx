@@ -21,6 +21,7 @@ import { useConfirmPin } from "@/hooks/useConfirmPin";
 import { useOrigin } from "@/hooks/useOrigin";
 type ItemProps = {
   id?: Id<"documents">;
+  parendId?: Id<"documents">;
   documentIcon?: String;
   active?: boolean;
   expanded?: boolean;
@@ -55,6 +56,7 @@ export const Item: React.FC<ItemProps> & ItemStaticProps = ({
   iconDoc,
   coverImage,
   onExpand,
+  parendId,
   title,
   level = 0,
 }) => {
@@ -110,6 +112,7 @@ export const Item: React.FC<ItemProps> & ItemStaticProps = ({
     } else {
       const promise = create({
         title: title + "",
+        parentDocument: parendId,
         content: content,
         icon: iconDoc,
         coverImage: coverImage

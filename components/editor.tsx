@@ -22,15 +22,15 @@ import editorjsColumns from '@calumk/editorjs-columns'
 import Strikethrough from '@sotaproject/strikethrough';
 import ToggleBlock from 'editorjs-toggle-block';
 import anyButton  from 'editorjs-button'
-// import ImageGallery from '@rodrigoodhin/editorjs-image-gallery'
+import Paragraph from '@editorjs/paragraph';
 import AttachesTool from '@editorjs/attaches';
 import CodeTool from '@editorjs/code';
 import TextVariantTune from '@editorjs/text-variant-tune';
 import AlignmentTuneTool from 'editorjs-text-alignment-blocktune'
 import Underline from '@editorjs/underline';
 import ChangeCase from 'editorjs-change-case';
+import Translate from '@editorjs/translate-inline';
 import { useEdgeStore } from "@/lib/edgestore";
-
 import { useEffect, useRef } from "react";
 import ImageTool from '@editorjs/image';
 import { toast } from "sonner";
@@ -83,7 +83,12 @@ const Editor = ({ onChange, holder, initialContent, editable }: EditorProps) => 
           simpleImage: SimpleImage,
           raw: Raw,
           underline: Underline,
-        
+          // translator: {
+          //   class: Translate,
+          //   config: {
+          //     endpoint: 'http://localhost:5000/translate?text=',
+          //   }
+          // },
           AnyButton: {
             class: anyButton,
             inlineToolbar: false,
@@ -112,6 +117,8 @@ const Editor = ({ onChange, holder, initialContent, editable }: EditorProps) => 
             }
           },
           paragraph: {
+            class: Paragraph,
+            inlineToolbar: true,
             tunes: ['textVariant', 'anyTuneName']
           },
           changeCase: {

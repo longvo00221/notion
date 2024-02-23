@@ -74,6 +74,7 @@ const DocumentList: React.FC<DocumentListProps> = ({
             id={doc._id}
             isFav={doc.isFavorite}
             isLocked={doc.isLocked}
+            parendId={doc.parentDocument}
             content={doc.content}
             iconDoc={doc.icon}
             title={doc.title}

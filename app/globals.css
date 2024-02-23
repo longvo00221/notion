@@ -177,7 +177,9 @@ h6 {
   background-color: transparent !important;
   border-radius: 0px !important;
 }
-
+.cdx-annotation_popup-form{
+  z-index: 99999;
+}
 .ce-inline-toolbar,
 .codex-editor--narrow .ce-toolbox,
 .ce-conversion-toolbar,
@@ -224,7 +226,13 @@ h6 {
 .cdx-notify__cross::before {
   background: white;
 }
-
+.cdx-marker{
+  background: rgba(243, 232, 88, 0.5);
+  color:#000
+}
+.dark .cdx-marker{
+  color: #fff;
+}
 /* Chế độ tối */
 
 

@@ -31,6 +31,6 @@ declare module '@sotaproject/strikethrough';
 declare module 'editorjs-button';
 declare module '@/dist/bundle'
 declare module 'react-big-calendar';
-
+declare module '@editorjs/translate-inline';
 
 declare module 'uuid';

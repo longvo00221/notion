@@ -71,26 +71,29 @@ const Navbar: React.FC<NavbarProps> = ({ isCollapsed, onResetWidth }) => {
             <MenuIcon
               role="button"
               onClick={onResetWidth}
-              className="h-6 w-6 text-muted-foreground"
+              className="h-6 w-6 min-h-[24px] min-w-[24px] text-muted-foreground"
             />
           )}
           <div className="flex items-center justify-between w-full">
             <Title initalData={document} />
             <div className="flex items-center gap-x-2">
-              <div>
-                {
-                  document.isFavorite ?
-                    <Button onClick={onFavorite} variant="ghost" className="px-3 py-2">
-                      <HeartCrack className="h-5 w-5 " />
-                    </Button > :
-                    <Button onClick={onFavorite} variant="ghost" className="px-3 py-2">
-                      <Heart className="h-5 w-5 " />
-                    </Button >
+              <div className="md:flex items-center gap-x-2 hidden">
+               
+                  {
+                    document.isFavorite ?
+                      <Button onClick={onFavorite} variant="ghost" className="px-3 py-2">
+                        <HeartCrack className="h-5 w-5 " />
+                      </Button > :
+                      <Button onClick={onFavorite} variant="ghost" className="px-3 py-2">
+                        <Heart className="h-5 w-5 " />
+                      </Button >
 
-                }
-              </div>
+                  }
+                </div>
+               
+           
               <Publish initialData={document} />
-              <Pin initialData={document} />
+                <Pin initialData={document} />
               <Menu documentId={document._id} />
             </div>
           </div>
