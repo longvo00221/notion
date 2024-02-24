@@ -70,7 +70,9 @@ const DocumentIdPage = ({
             src="/error.png"
             height="300"
             width="300"
+            
             alt="Error"
+            loading='lazy'
             className="dark:hidden"
           />
           <Image
@@ -78,6 +80,7 @@ const DocumentIdPage = ({
             height="300"
             width="300"
             alt="Error"
+            loading='lazy'
             className="hidden dark:block"
           />
           <p className="text-muted-foreground mt-2">Note is locked by the author. Please contact the author if you want to view it.</p>

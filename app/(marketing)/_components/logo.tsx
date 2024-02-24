@@ -14,12 +14,14 @@ const Logo = () => {
         <Image
         src="/logo.svg"
         alt='logo'
+        loading='lazy'
         width="40"
         height="40"
         className='dark:hidden'/>
         <Image
         src="/logo-dark.svg"
         alt='logo'
+        loading='lazy'
         width="40"
         height="40"
         className='hidden dark:block'/>

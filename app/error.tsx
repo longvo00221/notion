@@ -12,6 +12,7 @@ const Error = () => {
         src="/error.png"
         height="300"
         width="300"
+        loading="lazy"
         alt="Error"
         className="dark:hidden"
       />
@@ -20,6 +21,7 @@ const Error = () => {
         height="300"
         width="300"
         alt="Error"
+        loading="lazy"
         className="hidden dark:block"
       />
       <h2 className="text-xl font-medium">

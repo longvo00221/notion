@@ -31,11 +31,13 @@ const DocumentsPage = () => {
         height="300"
         width="300"
         alt='Empty'
+        loading='lazy'
         className='dark:hidden block'/>
         <Image 
         src="/empty-dark.png"
         height="300"
         width="300"
+        loading='lazy'
         alt='Empty'
         className='dark:block hidden'/>
         <h2 className='text-lg font-medium'>
