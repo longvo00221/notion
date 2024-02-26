@@ -69,7 +69,6 @@ const ListTasks: React.FC<ListTasksProps> = ({ tasks, setTasks }) => {
 };
 
 export default ListTasks;
-// 1p:02:56
 const Section: React.FC<ListTasksSectionProps> = ({ status, tasks, setTasks, todos, inProgress, closed }) => {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "task",

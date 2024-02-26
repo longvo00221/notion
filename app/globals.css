@@ -251,8 +251,12 @@ h6 {
   color: #616161;
 
 }
-
-
+.dark .cdx-annotation_popup-form{
+  background-color: #000;
+}
+.dark .cdx-annotation_popup-btn-close svg{
+  color: #fff;
+}
 .dark .ce-popover,
 .dark .ce-inline-toolbar {
   background-color: #1f1f1f;
