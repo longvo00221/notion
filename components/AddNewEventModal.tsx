@@ -84,6 +84,7 @@ const AddNewEventModal: React.FC<AddNewEventModalProps> = ({
                             shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-500 
                             focus:ring-2 
                             p-4
+                            bg-white 
                             focus:ring-inset focus:ring-violet-600 
                             sm:text-sm sm:leading-6"
                           value={newEvent.title}

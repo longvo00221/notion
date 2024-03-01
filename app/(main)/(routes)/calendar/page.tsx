@@ -11,6 +11,11 @@ import { Dialog, Transition } from "@headlessui/react";
 import { CheckIcon, ExclamationTriangleIcon } from "@heroicons/react/20/solid";
 import { EventSourceInput } from "@fullcalendar/core/index.js";
 import AddNewEventModal from "@/components/AddNewEventModal";
+import { useMutation, useQuery } from 'convex/react'
+import { api } from "@/convex/_generated/api";
+import { toast } from "sonner";
+
+import { Skeleton } from "@/components/ui/skeleton";
 export interface Event {
   title: string;
   daytime: string;
@@ -20,14 +25,39 @@ export interface Event {
 }
 
 type CalendarPageProps = {};
+const parseEventsFromData = (calendarSchedule: any): Event[] => {
+  const events: Event[] = [];
+  calendarSchedule.forEach((item: any) => {
+    const schedules = JSON.parse(item.schedule);
+    schedules.forEach((schedule: any) => {
+      events.push({
+        title: schedule.title,
+        daytime: schedule.daytime,
+        start: schedule.start,
+        allDay: schedule.allDay,
+        id: item._id,
+      });
+    });
+  });
 
+  return events;
+};
 const CalendarPage: React.FC<CalendarPageProps> = () => {
-  const [events, setEvents] = useState([{ title: "Untitle", id: "1" }]);
+  const calendarSchedule = useQuery(api.calendar.getSchedule, {})
   const [allEvents, setAllEvents] = useState<Event[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [idToDelete, setIdToDelete] = useState<number | null>(null);
-
+  const [idToDelete, setIdToDelete] = useState<any>();
+  const createSchedule = useMutation(api.calendar.createCalendarSchedule)
+  const deleteSchedule = useMutation(api.calendar.removeSchedule)
+  const [submitHandled, setSubmitHandled] = useState(false);
+  console.log(calendarSchedule)
+  useEffect(() => {
+    if (calendarSchedule) {
+      const events = parseEventsFromData(calendarSchedule);
+      setAllEvents(events);
+    }
+  }, [calendarSchedule]);
   const [newEvent, setNewEvent] = useState<Event>({
     title: "",
     daytime: "",
@@ -50,13 +80,7 @@ const CalendarPage: React.FC<CalendarPageProps> = () => {
       });
     }
   }, []);
-  function handleEditEventTitle(id: string, value: string) {
-    setEvents(
-      events.map((event) =>
-        event.id === id ? { ...event, title: value } : event
-      )
-    );
-  }
+  
 
   function handleDateClick(arg: { date: Date; allDay: boolean }) {
     setNewEvent({
@@ -67,29 +91,48 @@ const CalendarPage: React.FC<CalendarPageProps> = () => {
     });
     setShowModal(true);
   }
+// function handleEditEventTitle(id: string, value: string) {
+  //   setEvents(
+  //     events.map((event) =>
+  //       event.id === id ? { ...event, title: value } : event
+  //     )
+  //   );
+  // }
+  // function addEvent(data: DropArg) {
+  //   const event = {
+  //     ...newEvent,
+  //     start: data.date.toISOString(),
+  //     title: (data.draggedEl as HTMLInputElement).value,
+  //     allDay: data.allDay,
+  //     id: new Date().getTime(),
+  //   };
+  //   setAllEvents([...allEvents, event]);
+  // }
+   // const inputRefs = useRef<RefsArray>([]);
 
-  function addEvent(data: DropArg) {
-    const event = {
-      ...newEvent,
-      start: data.date.toISOString(),
-      title: (data.draggedEl as HTMLInputElement).value,
-      allDay: data.allDay,
-      id: new Date().getTime(),
-    };
-    setAllEvents([...allEvents, event]);
-  }
+  // const handleInputClick = (index: number) => {
+  //   if (inputRefs.current[index]) {
+  //     inputRefs.current[index]?.focus();
+  //   }
+  // }
 
   function handleDeleteModal(data: { event: { id: string } }) {
     setShowDeleteModal(true);
-    setIdToDelete(Number(data.event.id));
+    setIdToDelete(data.event.id);
   }
 
   function handleDelete() {
     setAllEvents(
       allEvents.filter((event) => Number(event.id) !== Number(idToDelete))
     );
+    const promise = deleteSchedule({id:idToDelete})
+    toast.promise(promise, {
+      loading: "Deleting schedule...",
+      success: "Delete schedule success!",
+      error: "Failed to delete schedule."
+    })
     setShowDeleteModal(false);
-    setIdToDelete(null);
+    setIdToDelete("");
   }
 
   function handleCloseModal() {
@@ -104,10 +147,19 @@ const CalendarPage: React.FC<CalendarPageProps> = () => {
     setShowDeleteModal(false);
     setIdToDelete(null);
   }
+  const onCreate = () => {
+    const promise = createSchedule({  schedule: JSON.stringify(allEvents) })
+      
+    toast.promise(promise, {
+      loading: "Creating a new schedule...",
+      success: "New schedule created!",
+      error: "Failed to create a new schedule."
+    })
+  }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setAllEvents([...allEvents, newEvent]);
+    setAllEvents(prevEvents => [...prevEvents, newEvent]);
     setShowModal(false);
     setNewEvent({
       title: "",
@@ -116,18 +168,17 @@ const CalendarPage: React.FC<CalendarPageProps> = () => {
       allDay: false,
       id: 0,
     });
+    setSubmitHandled(true);
+
+    // onCreate()
   }
-
-  type RefsArray = Array<HTMLInputElement | null>;
-
-  const inputRefs = useRef<RefsArray>([]);
-
-  const handleInputClick = (index: number) => {
-    if (inputRefs.current[index]) {
-      inputRefs.current[index]?.focus();
+  useEffect(() => {
+    if (submitHandled) {
+      onCreate()
+      setSubmitHandled(false); 
     }
-  };
-
+  }, [submitHandled, allEvents]);
+  // type RefsArray = Array<HTMLInputElement | null>;
   function renderEventContent(eventInfo: any) {
     const dateTimeString = eventInfo.event._def.extendedProps.daytime;
     const dateTime = new Date(dateTimeString);
@@ -152,6 +203,9 @@ const CalendarPage: React.FC<CalendarPageProps> = () => {
       </div>
     );
   }
+  
+  
+
   return (
     <>
       <nav className="flex justify-between mb-12 shadow-md border-violet-100 dark:bg-[#161616] px-2 py-[5px]">
@@ -177,7 +231,7 @@ const CalendarPage: React.FC<CalendarPageProps> = () => {
               selectable={true}
               selectMirror={true}
               dateClick={handleDateClick}
-              drop={(data) => addEvent(data)}
+              // drop={(data) => addEvent(data)}
               eventClick={(data) => handleDeleteModal(data)}
             />
           </div>
@@ -284,86 +338,6 @@ const CalendarPage: React.FC<CalendarPageProps> = () => {
             </div>
           </Dialog>
         </Transition.Root>
-        {/* <Transition.Root show={showModal} as={Fragment}>
-          <Dialog as="div" className="relative z-10" onClose={setShowModal}>
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-            >
-              <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-            </Transition.Child>
-
-            <div className="fixed inset-0 z-10 overflow-y-auto">
-              <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                <Transition.Child
-                  as={Fragment}
-                  enter="ease-out duration-300"
-                  enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                  enterTo="opacity-100 translate-y-0 sm:scale-100"
-                  leave="ease-in duration-200"
-                  leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-                  leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                >
-                  <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
-                    <div>
-                      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-                        <CheckIcon
-                          className="h-6 w-6 text-green-600"
-                          aria-hidden="true"
-                        />
-                      </div>
-                      <div className="mt-3 text-center sm:mt-5">
-                        <Dialog.Title
-                          as="h3"
-                          className="text-base font-semibold leading-6 text-gray-900"
-                        >
-                          Add Event
-                        </Dialog.Title>
-                        <form action="submit" onSubmit={handleSubmit}>
-                          <div className="mt-2">
-                            <input
-                              type="text"
-                              name="title"
-                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 
-                              shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 
-                              focus:ring-2 
-                              focus:ring-inset focus:ring-violet-600 
-                              sm:text-sm sm:leading-6"
-                              value={newEvent.title}
-                              onChange={(e) => handleChange(e)}
-                              placeholder="Title"
-                            />
-                          </div>
-                          <div className="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
-                            <button
-                              type="submit"
-                              className="inline-flex w-full justify-center rounded-md bg-violet-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600 sm:col-start-2 disabled:opacity-25"
-                              disabled={newEvent.title === ""}
-                            >
-                              Create
-                            </button>
-                            <button
-                              type="button"
-                              className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:col-start-1 sm:mt-0"
-                              onClick={handleCloseModal}
-                            >
-                              Cancel
-                            </button>
-                          </div>
-                        </form>
-                      </div>
-                    </div>
-                  </Dialog.Panel>
-                </Transition.Child>
-              </div>
-            </div>
-          </Dialog>
-        </Transition.Root> */}
         <AddNewEventModal
           newEvent={newEvent}
           setNewEvent={setNewEvent}

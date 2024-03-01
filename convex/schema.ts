@@ -13,7 +13,9 @@ export default defineSchema({
         isPublished: v.boolean(),
         isLocked: v.array(v.string()),
         isFavorite:v.optional(v.boolean())
+    }).index("by_user",["userId"]).index("by_user_parent",["userId","parentDocument"]),
+    calendarSchedule: defineTable({
+        userId: v.string(),
+        schedule: v.optional(v.string()),
     })
-    .index("by_user",["userId"])
-    .index("by_user_parent",["userId","parentDocument"])
 })
