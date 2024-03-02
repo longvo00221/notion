@@ -6,7 +6,7 @@ import { Event } from "@/app/(main)/(routes)/calendar/page";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import dayjs, { Dayjs } from "dayjs";
 type AddNewEventModalProps = {
   showModal: boolean;
@@ -25,7 +25,7 @@ const AddNewEventModal: React.FC<AddNewEventModalProps> = ({
   setNewEvent,
   setShowModal,
 }) => {
-    const [value, setValue] = React.useState<Dayjs | null>(dayjs('2022-04-17T15:30'));
+    const [value, setValue] = React.useState<Dayjs | null>(dayjs('2022-04-17T0:30'));
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setNewEvent({
       ...newEvent,
@@ -94,10 +94,9 @@ const AddNewEventModal: React.FC<AddNewEventModalProps> = ({
                       </div>
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DemoContainer components={["DateTimePicker"]}>
-                          <DateTimePicker 
-                          value={value}
-                          onChange={(newValue) => setValue(newValue)}
-                          label="Basic date time picker" />
+                        <TimePicker label="Basic time picker"value={value}
+                          onChange={(newValue) => setValue(newValue)}/>
+                          
                         </DemoContainer>
                       </LocalizationProvider>
                       <div className="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
