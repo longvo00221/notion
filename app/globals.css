@@ -172,6 +172,15 @@ h6 {
 
   border: 1px solid #ccc;
 }
+@media (max-width: 700px) {
+  .fc .fc-toolbar {
+    flex-direction: column;
+    gap:5px
+  }
+  .fc-view-harness.fc-view-harness-active{
+    height: 60vh !important;
+  }
+}
 
 .ce-toolbar__actions {
   background-color: transparent !important;

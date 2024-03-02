@@ -216,7 +216,7 @@ const CalendarPage: React.FC<CalendarPageProps> = () => {
               headerToolbar={{
                 left: "prev,next",
                 center: "title",
-                right: "today,dayGridMonth,timeGridWeek",
+                right: "dayGridMonth,timeGridWeek",
               }}
               events={events as EventSourceInput}
               eventContent={renderEventContent}

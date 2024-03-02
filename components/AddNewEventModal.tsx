@@ -8,6 +8,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import dayjs, { Dayjs } from "dayjs";
+import { MobileTimePicker } from "@mui/x-date-pickers";
 type AddNewEventModalProps = {
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -33,7 +34,14 @@ const AddNewEventModal: React.FC<AddNewEventModalProps> = ({
       title: e.target.value,
     });
   };
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
+  const pickerComponent = isMobile ? (
+    <MobileTimePicker  value={value} onChange={(newValue) => setValue(newValue)} />
+  ) : (
+    <TimePicker label="Basic time picker" value={value} onChange={(newValue) => setValue(newValue)} />
+  );
+  
   return (
     <Transition.Root show={showModal} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={setShowModal}>
@@ -94,8 +102,7 @@ const AddNewEventModal: React.FC<AddNewEventModalProps> = ({
                       </div>
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DemoContainer components={["DateTimePicker"]}>
-                        <TimePicker label="Basic time picker"value={value}
-                          onChange={(newValue) => setValue(newValue)}/>
+                         {pickerComponent}
                           
                         </DemoContainer>
                       </LocalizationProvider>
