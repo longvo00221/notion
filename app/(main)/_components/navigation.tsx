@@ -153,9 +153,9 @@ const Navigation: React.FC<NavigationProps> = () => {
             <DocumentList />
             <Item onClick={handleCreateNote} label="Add a page" icon={Plus} />
             <div className="mt-4">
-              {/* <div>
+              <div>
                 <Item label="Calendar" icon={Calendar} onClick={() => { router.push('/calendar') }} />
-              </div> */}
+              </div>
               <div>
                 <Item label="Todo list" icon={ListTodo} onClick={() => { router.push('/todo') }} />
               </div>
