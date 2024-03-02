@@ -22,6 +22,7 @@ export interface Event {
   start: Date | string;
   allDay: boolean;
   id: number;
+  idc?:any
 }
 
 type CalendarPageProps = {};
@@ -44,18 +45,18 @@ const parseEventsFromData = (calendarSchedule: any): Event[] => {
 };
 const CalendarPage: React.FC<CalendarPageProps> = () => {
   const calendarSchedule = useQuery(api.calendar.getSchedule, {})
-  const [allEvents, setAllEvents] = useState<Event[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [idToDelete, setIdToDelete] = useState<any>();
+
   const createSchedule = useMutation(api.calendar.createCalendarSchedule)
   const deleteSchedule = useMutation(api.calendar.removeSchedule)
-  const [submitHandled, setSubmitHandled] = useState(false);
-  console.log(calendarSchedule)
+  const [submitHandled, setSubmitHandled] = useState<boolean>(false);
   useEffect(() => {
     if (calendarSchedule) {
       const events = parseEventsFromData(calendarSchedule);
-      setAllEvents(events);
+      setEvents(events);
     }
   }, [calendarSchedule]);
   const [newEvent, setNewEvent] = useState<Event>({
@@ -106,7 +107,6 @@ const CalendarPage: React.FC<CalendarPageProps> = () => {
   //     allDay: data.allDay,
   //     id: new Date().getTime(),
   //   };
-  //   setAllEvents([...allEvents, event]);
   // }
    // const inputRefs = useRef<RefsArray>([]);
 
@@ -116,15 +116,13 @@ const CalendarPage: React.FC<CalendarPageProps> = () => {
   //   }
   // }
 
-  function handleDeleteModal(data: { event: { id: string } }) {
+  function handleDeleteModal(data: { event: { id: string} }) {
     setShowDeleteModal(true);
     setIdToDelete(data.event.id);
   }
 
   function handleDelete() {
-    setAllEvents(
-      allEvents.filter((event) => Number(event.id) !== Number(idToDelete))
-    );
+   
     const promise = deleteSchedule({id:idToDelete})
     toast.promise(promise, {
       loading: "Deleting schedule...",
@@ -148,8 +146,15 @@ const CalendarPage: React.FC<CalendarPageProps> = () => {
     setIdToDelete(null);
   }
   const onCreate = () => {
-    const promise = createSchedule({  schedule: JSON.stringify(allEvents) })
-      
+    const Event = [newEvent]
+    const promise = createSchedule({  schedule: JSON.stringify(Event) })
+    setNewEvent({
+      title: "",
+      daytime: "",
+      start: "",
+      allDay: false,
+      id: 0,
+    });
     toast.promise(promise, {
       loading: "Creating a new schedule...",
       success: "New schedule created!",
@@ -159,25 +164,15 @@ const CalendarPage: React.FC<CalendarPageProps> = () => {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setAllEvents(prevEvents => [...prevEvents, newEvent]);
     setShowModal(false);
-    setNewEvent({
-      title: "",
-      daytime: "",
-      start: "",
-      allDay: false,
-      id: 0,
-    });
     setSubmitHandled(true);
-
-    // onCreate()
   }
   useEffect(() => {
     if (submitHandled) {
       onCreate()
       setSubmitHandled(false); 
     }
-  }, [submitHandled, allEvents]);
+  }, [submitHandled]);
   // type RefsArray = Array<HTMLInputElement | null>;
   function renderEventContent(eventInfo: any) {
     const dateTimeString = eventInfo.event._def.extendedProps.daytime;
@@ -223,7 +218,7 @@ const CalendarPage: React.FC<CalendarPageProps> = () => {
                 center: "title",
                 right: "today,dayGridMonth,timeGridWeek",
               }}
-              events={allEvents as EventSourceInput}
+              events={events as EventSourceInput}
               eventContent={renderEventContent}
               nowIndicator={true}
               editable={true}
