@@ -55,6 +55,7 @@ export const Title: TitleComponent = ({initalData}) => {
                 onChange={onChange}
                 onKeyDown={onKeyDown}
                 value={title}
+                maxLength={60}
                 />
             ):(
                 <Button

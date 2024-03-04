@@ -91,6 +91,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ initialData, preview }) => {
 
       {isEditing && !preview ? (
         <TextareaAutosize
+          maxLength={60}
           ref={inputRef}
           onBlur={disableInput}
           onKeyDown={onKeyDown}
