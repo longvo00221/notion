@@ -20,7 +20,7 @@ const Heading = () => {
       content: defaultDocument.content,
       coverImage:defaultDocument.coverImage,
       icon:defaultDocument.icon
-    }).then((documentId)=>{router.push(`/documents/${documentId}`)})
+    }).then((documentId)=>{router.push(`/documents/${documentId}?url=home`)})
     toast.promise(promise,{
       loading:"Creating a guide note...",
       success:"Created guide note! Welcome",

@@ -9,6 +9,8 @@ import { Cover } from "@/components/cover";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useConfirmPin } from "@/hooks/useConfirmPin";
 import LockedNote from "@/app/(main)/_components/lockednote";
+import { useSearchParams } from "next/navigation";
+import { useNotification } from "@/hooks/useNotification";
 
 interface DocumentIdPageProps {
   params: {
@@ -26,6 +28,13 @@ const DocumentIdPage = ({
       }),
     []
   );
+  const p = useSearchParams()
+  const notification = useNotification();
+  useEffect(() => {
+    if (p.size === 1) {
+      notification.onOpen();
+    }
+  }, []);
 
   const pinConfirm = useConfirmPin()
   const document = useQuery(api.documents.getById, {

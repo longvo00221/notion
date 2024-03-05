@@ -39,7 +39,7 @@ const Navbar = () => {
         {isAuthenticated && !isLoading && (
           <>
             <Button variant="ghost" size="sm">
-              <Link href="/documents">Enter Notion</Link>
+              <Link href="/documents?url=home">Enter Notion</Link>
             </Button>
             <UserButton afterSignOutUrl="/"/>
           </>

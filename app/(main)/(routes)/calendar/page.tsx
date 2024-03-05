@@ -191,10 +191,10 @@ const CalendarPage: React.FC<CalendarPageProps> = () => {
 
     const formattedTime = `${hour}:${minute}${meridiem}`;
     return (
-      <div className="px-2">
-        <span>{formattedTime}</span>
+      <div className="px-2 flex items-center">
+        <p>{formattedTime}</p>
         <span className="ml-1 mr-2">|</span>
-        <span>{eventInfo.event.title}</span>
+        <p className="w-full truncate">{eventInfo.event.title}</p>
       </div>
     );
   }
