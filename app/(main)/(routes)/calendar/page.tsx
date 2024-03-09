@@ -1,28 +1,25 @@
 "use client";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin, {
-  Draggable,
-  DropArg,
-} from "@fullcalendar/interaction";
+import interactionPlugin, { Draggable } from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { CheckIcon, ExclamationTriangleIcon } from "@heroicons/react/20/solid";
+import { ExclamationTriangleIcon } from "@heroicons/react/20/solid";
 import { EventSourceInput } from "@fullcalendar/core/index.js";
 import AddNewEventModal from "@/components/AddNewEventModal";
-import { useMutation, useQuery } from 'convex/react'
+import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
+import DeleteEventModal from "@/components/DeleteEventModal";
 
-import { Skeleton } from "@/components/ui/skeleton";
 export interface Event {
   title: string;
   daytime: string;
   start: Date | string;
   allDay: boolean;
   id: number;
-  idc?:any
+  idc?: any;
 }
 
 type CalendarPageProps = {};
@@ -44,14 +41,14 @@ const parseEventsFromData = (calendarSchedule: any): Event[] => {
   return events;
 };
 const CalendarPage: React.FC<CalendarPageProps> = () => {
-  const calendarSchedule = useQuery(api.calendar.getSchedule, {})
+  const calendarSchedule = useQuery(api.calendar.getSchedule, {});
   const [events, setEvents] = useState<Event[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [idToDelete, setIdToDelete] = useState<any>();
-
-  const createSchedule = useMutation(api.calendar.createCalendarSchedule)
-  const deleteSchedule = useMutation(api.calendar.removeSchedule)
+  const [scheduleData,setScheduleData] = useState<any>();
+  const createSchedule = useMutation(api.calendar.createCalendarSchedule);
+  const deleteSchedule = useMutation(api.calendar.removeSchedule);
   const [submitHandled, setSubmitHandled] = useState<boolean>(false);
   useEffect(() => {
     if (calendarSchedule) {
@@ -81,7 +78,6 @@ const CalendarPage: React.FC<CalendarPageProps> = () => {
       });
     }
   }, []);
-  
 
   function handleDateClick(arg: { date: Date; allDay: boolean }) {
     setNewEvent({
@@ -92,7 +88,7 @@ const CalendarPage: React.FC<CalendarPageProps> = () => {
     });
     setShowModal(true);
   }
-// function handleEditEventTitle(id: string, value: string) {
+  // function handleEditEventTitle(id: string, value: string) {
   //   setEvents(
   //     events.map((event) =>
   //       event.id === id ? { ...event, title: value } : event
@@ -108,7 +104,7 @@ const CalendarPage: React.FC<CalendarPageProps> = () => {
   //     id: new Date().getTime(),
   //   };
   // }
-   // const inputRefs = useRef<RefsArray>([]);
+  // const inputRefs = useRef<RefsArray>([]);
 
   // const handleInputClick = (index: number) => {
   //   if (inputRefs.current[index]) {
@@ -116,19 +112,19 @@ const CalendarPage: React.FC<CalendarPageProps> = () => {
   //   }
   // }
 
-  function handleDeleteModal(data: { event: { id: string} }) {
+  function handleDeleteModal(data: { event: { id: string } }) {
     setShowDeleteModal(true);
     setIdToDelete(data.event.id);
+    setScheduleData(data.event)
   }
 
   function handleDelete() {
-   
-    const promise = deleteSchedule({id:idToDelete})
+    const promise = deleteSchedule({ id: idToDelete });
     toast.promise(promise, {
       loading: "Deleting schedule...",
       success: "Delete schedule success!",
-      error: "Failed to delete schedule."
-    })
+      error: "Failed to delete schedule.",
+    });
     setShowDeleteModal(false);
     setIdToDelete("");
   }
@@ -146,8 +142,8 @@ const CalendarPage: React.FC<CalendarPageProps> = () => {
     setIdToDelete(null);
   }
   const onCreate = () => {
-    const Event = [newEvent]
-    const promise = createSchedule({  schedule: JSON.stringify(Event) })
+    const Event = [newEvent];
+    const promise = createSchedule({ schedule: JSON.stringify(Event) });
     setNewEvent({
       title: "",
       daytime: "",
@@ -158,9 +154,9 @@ const CalendarPage: React.FC<CalendarPageProps> = () => {
     toast.promise(promise, {
       loading: "Creating a new schedule...",
       success: "New schedule created!",
-      error: "Failed to create a new schedule."
-    })
-  }
+      error: "Failed to create a new schedule.",
+    });
+  };
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -169,8 +165,8 @@ const CalendarPage: React.FC<CalendarPageProps> = () => {
   }
   useEffect(() => {
     if (submitHandled) {
-      onCreate()
-      setSubmitHandled(false); 
+      onCreate();
+      setSubmitHandled(false);
     }
   }, [submitHandled]);
   // type RefsArray = Array<HTMLInputElement | null>;
@@ -198,8 +194,6 @@ const CalendarPage: React.FC<CalendarPageProps> = () => {
       </div>
     );
   }
-  
-  
 
   return (
     <>
@@ -250,7 +244,7 @@ const CalendarPage: React.FC<CalendarPageProps> = () => {
           </div> */}
         </div>
 
-        <Transition.Root show={showDeleteModal} as={Fragment}>
+        {/* <Transition.Root show={showDeleteModal} as={Fragment}>
           <Dialog
             as="div"
             className="relative z-10"
@@ -332,7 +326,14 @@ const CalendarPage: React.FC<CalendarPageProps> = () => {
               </div>
             </div>
           </Dialog>
-        </Transition.Root>
+        </Transition.Root> */}
+        <DeleteEventModal
+          onClick={handleDelete}
+          onCloseModal={handleCloseModal}
+          setShowModal={setShowDeleteModal}
+          showModal={showDeleteModal}
+          data={scheduleData}
+        />
         <AddNewEventModal
           newEvent={newEvent}
           setNewEvent={setNewEvent}
