@@ -67,6 +67,11 @@ const CreateTask: React.FC<CreateTaskProps> = ({ tasks, setTasks }) => {
                 return list;
             });
             toast.success("Create new task success")
+            setTask({
+                id: "",
+                name: "",
+                status: "todo",
+            });
             form.reset();
         } catch (error) {
             console.error(error);
